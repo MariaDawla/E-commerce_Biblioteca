@@ -1,0 +1,76 @@
+CREATE TABLE Livro 
+( 
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    titulo_original VARCHAR(50),
+    genero VARCHAR(100),  
+    idioma VARCHAR(50),
+    autor VARCHAR(255),  
+    editora VARCHAR(255),
+    preco FLOAT,   
+    numero_paginas INT,  
+    isbn VARCHAR(20),
+    data_publicacao DATE,
+    imagem VARCHAR(255)
+);
+CREATE TABLE Usuario 
+( 
+    id SERIAL PRIMARY KEY,  
+    nome VARCHAR(255), 
+    email VARCHAR(255),  
+    senha VARCHAR(255),  
+    cpf VARCHAR(14),  
+    telefone VARCHAR(20), 
+    cidade VARCHAR(100),  
+    rua VARCHAR(255),  
+    bairro VARCHAR(100),  
+    numero INT,  
+    cep VARCHAR(20)
+);
+CREATE TABLE Carrinho 
+( 
+    id SERIAL PRIMARY KEY,
+    id_livro INT,  
+    id_usuario INT,  
+    preco_total FLOAT,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+);
+CREATE TABLE Estoque 
+( 
+    id SERIAL PRIMARY KEY,    
+    id_livro INT, 
+    quantidade INT,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id)
+);
+CREATE TABLE Pedido 
+( 
+    id SERIAL PRIMARY KEY,
+    id_usuario INT,  
+    preco_total FLOAT,  
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+);
+CREATE TABLE carrinho_livro 
+( 
+    id SERIAL PRIMARY KEY, 
+    id_carrinho INT,  
+    id_livro INT,  
+    FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id),
+    FOREIGN KEY (id_livro) REFERENCES Livro(id)
+);
+CREATE TABLE livro_pedido 
+( 
+    id SERIAL PRIMARY KEY,
+    id_livro INT,  
+    id_pedido INT,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id),
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id)
+);
+CREATE TABLE usuario_pedido 
+( 
+    id SERIAL PRIMARY KEY, 
+    id_usuario INT,  
+    id_pedido INT,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id)
+);
