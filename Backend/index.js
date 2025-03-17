@@ -25,29 +25,49 @@ app.get("/livro", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarDepartamentos (com parâmetro)
 // "/:id" usado como parematro.
 app.get("/livro/:id", async (req, res) => {
-    const departamentos = await db.mostrarLivro(req.params.id);
-    res.json(departamentos);
+    
+    const id = req.params.id; 
+
+    const idInt = parseInt(id)
+
+    if (idInt != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const departamentos = await db.mostrarLivro(id);
+        res.json(departamentos);
+
+    }
+
 })
 
 //Rota para função inserirDepartamento
 app.get("/livroADD/", async (req, res) => {
     const { nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem } = req.query; // Pegando os parâmetros da URL
-    await db.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem);
-    res.json({ mensagem: "Livro inserido com sucesso!" });
+
+    if(preco != parseFloat(preco)){
+        res.json({mensagem: "Você digitou alguma letra no campo 'preco', digita apenas números"})
+    } else if (numero_paginas != parseInt(numero_paginas)) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero_paginas'. Escreva apenas números inteiros para da certo!"})
+    } else if (isbn != parseInt(isbn)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. Escreva apenas números inteiros para da certo!"})
+    } else {
+        await db.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem);//Executando o método inserirLivro
+    res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
+    }
 })
 
 //Rota para função modificarPrecoLivro
 app.get("/livroUPT/", async (req, res) => {
     const {id, preco} = req.query; //Pegando os parâmetros da URL
 
-    console.log(id)
-    console.log(preco)
+    console.log("id da URL: "+id)
+    console.log("preço da URL: "+preco)
 
-    const idInt = parseInt(id, 10);
+    const idInt = parseInt(id);
     const precoFloat = parseFloat(preco);
 
-    console.log(idInt)
-    console.log(precoFloat)
+    console.log("id convertido: "+idInt)
+    console.log("preço convertido: "+precoFloat)
 
     if(id != idInt){
         res.json({mensagem: "Você escreveu uma alguma letra no 'id'. Tem que ser um número"})
@@ -62,8 +82,17 @@ app.get("/livroUPT/", async (req, res) => {
 
 //Rota para função deletarDepartamento
 app.get("/livroDEL/:id", async (req, res) => {
-    await db.deletarLivro(req.params.id);
-    res.json({mensagem: "Livro deletado com sucesso"});
+
+    const id = req.params.id
+
+    const idInt = parseInt(id)
+
+    if(id != idInt){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await db.deletarLivro(id);
+        res.json({mensagem: "Livro deletado com sucesso"});
+    }
 })
 
 app.listen(port)
