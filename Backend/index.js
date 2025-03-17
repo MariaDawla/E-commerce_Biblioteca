@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const db = require("./db") 
+const dbLivro = require("./livro") //importa as funções do arquivo livro.js
 
 const port = process.env.PORT;
 
@@ -18,7 +18,7 @@ app.get("/", (req, res) =>{
 
 //Criando uma rota para utilizar a função mostrarDepartamentos
 app.get("/livro", async (req, res) => {
-    const departamentos = await db.mostrarLivros();
+    const departamentos = await dbLivro.mostrarLivros();
     res.json(departamentos);
 })
 
@@ -33,7 +33,7 @@ app.get("/livro/:id", async (req, res) => {
     if (idInt != id) {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
     } else {
-        const departamentos = await db.mostrarLivro(id);
+        const departamentos = await dbLivro.mostrarLivro(id);
         res.json(departamentos);
 
     }
@@ -49,7 +49,7 @@ app.get("/livroADD/", async (req, res) => {
     } else if (numero_paginas != parseInt(numero_paginas)) {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero_paginas'. Escreva apenas números inteiros para da certo!"})
     } else if (isbn != parseInt(isbn)){
-        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. Escreva apenas números inteiros para da certo!"})
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
     } else {
         await db.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem);//Executando o método inserirLivro
     res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
@@ -74,7 +74,7 @@ app.get("/livroUPT/", async (req, res) => {
     } else if (preco != precoFloat){
         res.json({mensagem: "Você escreveu uma alguma letra no 'preco'. Tem que ser um número"})
     } else {
-        await db.modificarPrecoLivro(idInt, precoFloat);
+        await dbLivro.modificarPrecoLivro(idInt, precoFloat);
         res.json({mensagem: "Livro atualizado com sucesso!"});
     }
     
@@ -90,7 +90,7 @@ app.get("/livroDEL/:id", async (req, res) => {
     if(id != idInt){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
     }else{
-        await db.deletarLivro(id);
+        await dbLivro.deletarLivro(id);
         res.json({mensagem: "Livro deletado com sucesso"});
     }
 })
