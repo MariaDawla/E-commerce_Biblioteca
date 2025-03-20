@@ -1,6 +1,5 @@
 //Função para conectar ao banco de dados
 async function connect() {
-   
 
     //Importando o Poll da biblioteca pg(postgresql)
     const {Pool} = require("pg");
@@ -38,50 +37,86 @@ async function connect() {
 }
 
 //Função para mostrar os departamentos
-async function mostrarLivros(){
+async function mostrarUsuarios(){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro");
+    const res = await client.query("SELECT * FROM Usuario");
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function mostrarLivro(id){
+async function mostrarUsuario(id){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro WHERE id=$1", [id]);
+    const res = await client.query("SELECT * FROM Usuario WHERE id=$1", [id]);
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem) {
+async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem]);
+    await client.query("INSERT INTO Livro (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
 }
 
-async function modificarPrecoLivro(id, preco) {
+async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep) {
     //Criando a conexão com o banco de dados
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
+
+    //Verificação e execução de comando sql
+    if(nome != null){
+        await client.query("UPDATE Usuario SET nome=$1 WHERE id=$2", [nome, id])
+    }
+
+    if(email != null){
+        await client.query("UPDATE Usuario SET email=$1 WHERE id=$2", [email, id])
+    }
+
+    if(senha != null){
+        await client.query("UPDATE Usuario SET senha=$1 WHERE id=$2", [senha, id])
+    }
+
+    if(telefone != null){
+        await client.query("UPDATE Usuario SET telefone=$1 WHERE id=$2", [telefone, id])
+    }
+
+    if(cidade != null){
+        await client.query("UPDATE Usuario SET cidade=$1 WHERE id=$2", [cidade, id])
+    }
+
+    if(rua != null){
+        await client.query("UPDATE Usuario SET rua=$1 WHERE id=$2", [rua, id])
+    }
+
+    if(bairro != null){
+        await client.query("UPDATE Usuario SET bairro=$1 WHERE id=$2", [bairro, id])
+    }
+
+    if(num_endereco != null){
+        await client.query("UPDATE Usuario SET numero=$1 WHERE id=$2", [num_endereco, id])
+    }
+
+    if(cep != null){
+        await client.query("UPDATE Usuario SET cep=$1 WHERE id=$2", [cep, id])
+    }
+
 }
 
-async function deletarLivro(id) {
+async function deletarUsuario(id) {
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("DELETE FROM Livro WHERE id=$1", [id])
+    await client.query("DELETE FROM Usuario WHERE id=$1", [id])
 }
 
 //exportando as funções desse arquivo para outro arquivo 
 module.exports = {
-    mostrarLivros,
-    mostrarLivro,
-    inserirLivro,
-    modificarPrecoLivro,
-    deletarLivro
+    mostrarUsuarios,
+    mostrarUsuario,
+    inserirUsuario,
+    modificarUsuario,
+    deletarUsuario
 }
