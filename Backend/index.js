@@ -4,6 +4,7 @@ require("dotenv").config();
 const dbLivro = require("./livro") //importa as funções do arquivo livro.js
 const dbUsuario = require("./usuario") //importa as funções do arquivo usuario.js
 const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
+const dbPedido = require("./pedido") //importa as funções do arquivo pedido.js
 
 const port = process.env.PORT;
 
@@ -224,7 +225,7 @@ app.get("/estoqueADD/", async (req, res) => {
 
     } else {
         //Executando o método inserirLivroNoEstoque
-        await dbEstoque.inserirLivroNoEstoque(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep);
+        await dbEstoque.inserirLivroNoEstoque(id_livro, quantidade);
 
         //Resposta para o usuário
         res.json({ mensagem: "Estoque inserido com sucesso!" }); 
@@ -252,7 +253,7 @@ app.get("/estoqueUPT/", async (req, res) => {
 })
 
 //Rota para função deletarEstoque
-//Caminho URL: http://localhost:11915/usuarioDEL/id
+//Caminho URL: http://localhost:11915/estoqueDEL/id
 app.get("/estoqueDEL/:id", async (req, res) => {
 
     const id = req.params.id
@@ -265,6 +266,77 @@ app.get("/estoqueDEL/:id", async (req, res) => {
     }
 })
 
+
+//================================================================PEDIDO==========================================================//
+//Criando uma rota para utilizar a função mostrarPedidos
+//Caminho URL: http://localhost:11915/pedido
+app.get("/pedido", async (req, res) => {
+    res.json(await dbPedido.mostrarPedidos);
+})
+
+//Criando uma rota para utilizar a função mostrarPedido
+// "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/pedido/id
+app.get("/pedido/:id", async (req, res) => {
+    
+    const id = req.params.id;
+
+    if (parseInt(id) != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const estoque = await dbPedido.mostrarPedido(id);
+        res.json(estoque);
+
+    }
+
+})
+
+//Rota para função inserirPedido
+//Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&preco_unitario=x&quantidade=x
+app.get("/estoqueADD/", async (req, res) => {
+
+    const {id_usuario, id_livro, preco_unitario, quantidade} = req.query; // Pegando os parâmetros da URL
+
+    //Condições
+    if (id_usuario != parseInt(id_usuario)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_usuario'. Escreva um número inteiro para da certo!"})
+
+    } else if(id_livro != parseInt(id_livro)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+    }else if(preco_unitario != parseFloat(preco_unitario)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número, no campo 'preco_unitario'. Escreva um número para da certo!"})
+
+    } else if (quantidade != parseInt(quantidade)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
+
+    } else {
+
+        //Executando o método inserirPedido
+        await dbPedido.inserirPedido(id_usuario, id_livro, preco_unitario, quantidade);
+
+        //Resposta para o usuário
+        res.json({ mensagem: "Pedido inserido com sucesso!" }); 
+    }
+})
+
+//Rota para função deletarPedido
+//Caminho URL: http://localhost:11915/pedidoDEL/id
+app.get("/pedidoDEL/:id", async (req, res) => {
+
+    const id = req.params.id
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await dbPedido.deletarPedido(id);
+        res.json({mensagem: "Pedido deletado com sucesso"});
+    }
+})
 
 app.listen(port)
 
