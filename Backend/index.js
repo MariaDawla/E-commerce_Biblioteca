@@ -2,7 +2,8 @@ require("dotenv").config();
 
 //importações
 const dbLivro = require("./livro") //importa as funções do arquivo livro.js
-const dbUsuario = require("./usuario")
+const dbUsuario = require("./usuario") //importa as funções do arquivo usuario.js
+const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
 
 const port = process.env.PORT;
 
@@ -181,6 +182,89 @@ app.get("/UsuarioDEL/:id", async (req, res) => {
         res.json({mensagem: "Usuario deletado com sucesso"});
     }
 })
+
+
+//================================================================ESTOQUE==========================================================//
+//Criando uma rota para utilizar a função mostrar_Livros_no_Estoque
+//Caminho URL: http://localhost:11915/estoque
+app.get("/estoque", async (req, res) => {
+    res.json(await dbEstoque.mostrar_Livros_no_Estoque);
+})
+
+//Criando uma rota para utilizar a função mostrar_Livro_no_Estoque
+// "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/estoque/id
+app.get("/estoque/:id", async (req, res) => {
+    
+    const id = req.params.id;
+
+    if (parseInt(id) != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const estoque = await dbEstoque.mostrar_Livro_no_Estoque(id);
+        res.json(estoque);
+
+    }
+
+})
+
+//Rota para função inserirLivroNoEstoque
+//Caminho URL: http://localhost:11915/estoqueADD?id_livro=x&quantidade=x
+app.get("/estoqueADD/", async (req, res) => {
+
+    const {id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
+
+    if(id_livro != parseInt(id_livro)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+    } else if (quantidade != parseInt(quantidade)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
+
+    } else {
+        //Executando o método inserirLivroNoEstoque
+        await dbEstoque.inserirLivroNoEstoque(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep);
+
+        //Resposta para o usuário
+        res.json({ mensagem: "Estoque inserido com sucesso!" }); 
+    }
+})
+
+//Rota para função modificar_Quantidade_do_Livro_no_Estoque
+//Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+app.get("/estoqueUPT/", async (req, res) => {
+
+    //Pegando os parâmetros da URL
+    const {id, quantidade} = req.query; 
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id'. Escreva um número inteiro para da certo!"})
+    } else if (quantidade != parseInt(quantidade)){
+           
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
+        
+    } else {
+        await dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id, quantidade);
+        res.json({mensagem: "Estoque atualizado com sucesso!"});
+    }
+    
+})
+
+//Rota para função deletarEstoque
+//Caminho URL: http://localhost:11915/usuarioDEL/id
+app.get("/estoqueDEL/:id", async (req, res) => {
+
+    const id = req.params.id
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await dbEstoque.deletar_Livro_no_Estoque(id);
+        res.json({mensagem: "Livro deletado, do estoque, com sucesso"});
+    }
+})
+
 
 app.listen(port)
 

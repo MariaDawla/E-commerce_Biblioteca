@@ -36,87 +36,53 @@ async function connect() {
     
 }
 
-//Função para mostrar os departamentos
-async function mostrarUsuarios(){
+//Função para mostrar o estoque
+async function mostrar_Livros_no_Estoque(){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Usuario");
+    const res = await client.query("SELECT * FROM Estoque");
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function mostrarUsuario(id){
+async function mostrar_Livro_no_Estoque(id){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Usuario WHERE id=$1", [id]);
+    const res = await client.query("SELECT * FROM Estoque WHERE id=$1", [id]);
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
+async function inserirLivroNoEstoque(id_livro, quantidade) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
+    await client.query("INSERT INTO Estoque (id_livro, quantidade) values ($1, $2)", [id_livro, quantidade]);
 }
 
-async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep) {
+async function modificar_Quantidade_do_Livro_no_Estoque(id, quantidade) {
     //Criando a conexão com o banco de dados
     const client = await connect();
 
     //Verificação e execução de comando sql
-    if(nome != null){
-        await client.query("UPDATE Usuario SET nome=$1 WHERE id=$2", [nome, id])
-    }
-
-    if(email != null){
-        await client.query("UPDATE Usuario SET email=$1 WHERE id=$2", [email, id])
-    }
-
-    if(senha != null){
-        await client.query("UPDATE Usuario SET senha=$1 WHERE id=$2", [senha, id])
-    }
-
-    if(telefone != null){
-        await client.query("UPDATE Usuario SET telefone=$1 WHERE id=$2", [telefone, id])
-    }
-
-    if(cidade != null){
-        await client.query("UPDATE Usuario SET cidade=$1 WHERE id=$2", [cidade, id])
-    }
-
-    if(rua != null){
-        await client.query("UPDATE Usuario SET rua=$1 WHERE id=$2", [rua, id])
-    }
-
-    if(bairro != null){
-        await client.query("UPDATE Usuario SET bairro=$1 WHERE id=$2", [bairro, id])
-    }
-
-    if(num_endereco != null){
-        await client.query("UPDATE Usuario SET numero=$1 WHERE id=$2", [num_endereco, id])
-    }
-
-    if(cep != null){
-        await client.query("UPDATE Usuario SET cep=$1 WHERE id=$2", [cep, id])
-    }
+    await client.query("UPDATE Estoque SET quantidade=$1 WHERE id=$2", [quantidade, id])
 
 }
 
-async function deletarUsuario(id) {
+async function deletar_Livro_no_Estoque(id) {
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("DELETE FROM Usuario WHERE id=$1", [id])
+    await client.query("DELETE FROM Estoque WHERE id=$1", [id])
 }
 
 //exportando as funções desse arquivo para outro arquivo 
 module.exports = {
-    mostrarUsuarios,
-    mostrarUsuario,
-    inserirUsuario,
-    modificarUsuario,
-    deletarUsuario
+    mostrar_Livros_no_Estoque,
+    mostrar_Livro_no_Estoque,
+    inserirLivroNoEstoque,
+    modificar_Quantidade_do_Livro_no_Estoque,
+    deletar_Livro_no_Estoque
 }
