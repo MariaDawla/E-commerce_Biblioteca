@@ -36,43 +36,46 @@ async function connect() {
     
 }
 
-//Função para mostrar os pedidos
-async function mostrarPedidos(){
+//Função para mostrar os Carrinho_livro
+async function mostrarCarrinhos_livro(){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Pedido");
+    const res = await client.query("SELECT * FROM carrinho_livro");
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function mostrarPedido(id){
+//Função para mostrar os Carrinho_livro por id
+async function mostrarCarrinho_livro(id){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Pedido WHERE id=$1", [id]);
+    const res = await client.query("SELECT * FROM carrinho_livro WHERE id=$1", [id]);
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function inserirPedido(id_usuario, id_livro, preco_unitario, quantidade) {
+//Função para inserir os Carrinho_livro
+async function inserirCarrinho_livro(id_carrinho, id_livro) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Pedido (id_usuario, id_livro, preco_unitario, quantidade, id_usuario, id_livro) values ($1, $2, $3, $4, $5, $6)", [id_usuario, id_livro, preco_unitario, quantidade, id_usuario, id_livro]);
+    await client.query("INSERT INTO carrinho_livro (id_carrinho, id_livro, id_carrinho, id_livro) values ($1, $2, $3, $4)", [id_carrinho, id_livro, id_carrinho, id_livro]);
 }
 
-async function deletarPedido(id) {
+//Função para deletar o Carrinho_livro
+async function deletarCarrinho_livro(id) {
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("DELETE FROM Pedido WHERE id=$1", [id])
+    await client.query("DELETE FROM carrinho_livro WHERE id=$1", [id])
 }
 
 //exportando as funções desse arquivo para outro arquivo 
 module.exports = {
-    mostrarPedidos,
-    mostrarPedido,
-    inserirPedido,
-    deletarPedido
+    mostrarCarrinhos_livro,
+    mostrarCarrinho_livro,
+    inserirCarrinho_livro,
+    deletarCarrinho_livro
 }

@@ -5,6 +5,7 @@ const dbLivro = require("./livro") //importa as funções do arquivo livro.js
 const dbUsuario = require("./usuario") //importa as funções do arquivo usuario.js
 const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
 const dbPedido = require("./pedido") //importa as funções do arquivo pedido.js
+const dbCarrinho_livro = require("./carrinho_livro") //importa as funções do arquivo carrinho_livro.js
 
 const port = process.env.PORT;
 
@@ -335,6 +336,67 @@ app.get("/pedidoDEL/:id", async (req, res) => {
     }else{
         await dbPedido.deletarPedido(id);
         res.json({mensagem: "Pedido deletado com sucesso"});
+    }
+})
+
+//================================================================Carrinho_livro==========================================================//
+//Criando uma rota para utilizar a função mostrarCarrinhos_livro
+//Caminho URL: http://localhost:11915/carrinho_livro
+app.get("/carrinho_livro", async (req, res) => {
+    res.json(await dbCarrinho_livro.mostrarCarrinhos_livro);
+})
+
+//Criando uma rota para utilizar a função mostrarCarrinho_livro
+// "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/carrinho_livro/id
+app.get("/carrinho_livro/:id", async (req, res) => {
+    
+    const id = req.params.id;
+
+    if (parseInt(id) != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const estoque = await dbCarrinho_livro.mostrarCarrinho_livro(id);
+        res.json(estoque);
+
+    }
+
+})
+
+//Rota para função inserirCarrinho_livro
+//Caminho URL: http://localhost:11915/carrinho_livroADD?id_carrinho=x&id_livro=x
+app.get("/carrinho_livroADD/", async (req, res) => {
+
+    const {id_carrinho, id_livro} = req.query; // Pegando os parâmetros da URL
+
+    if(id_livro != parseInt(id_livro)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+    } else if (id_carrinho != parseInt(id_carrinho)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_carrinho'. Escreva um número inteiro para da certo!"})
+
+    } else {
+        //Executando o método inserirLivroNoEstoque
+        await dbCarrinho_livro.inserirCarrinho_livro(id_carrinho, id_livro);
+
+        //Resposta para o usuário
+        res.json({ mensagem: "carrinho_livro inserido com sucesso!" }); 
+    }
+})
+
+//Rota para função deletarCarrinho_livro
+//Caminho URL: http://localhost:11915/carrinho_livroDEL/id
+app.get("/carrinho_livroDEL/:id", async (req, res) => {
+
+    const id = req.params.id
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await dbCarrinho_livro.deletarCarrinho_livro(id);
+        res.json({mensagem: "carrinho_livro deletado com sucesso"});
     }
 })
 
