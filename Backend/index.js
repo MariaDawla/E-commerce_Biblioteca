@@ -6,6 +6,8 @@ const dbUsuario = require("./usuario") //importa as funções do arquivo usuario
 const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
 const dbPedido = require("./pedido") //importa as funções do arquivo pedido.js
 const dbCarrinho_livro = require("./carrinho_livro") //importa as funções do arquivo carrinho_livro.js
+const dbLivro_pedido = require("./livro_pedido") //importa as funções do arquivo livro_pedido.js
+const dbUsuario_pedido = require("./usuario_pedido") //importa as funções do arquivo usuario_pedido.js
 
 const port = process.env.PORT;
 
@@ -397,6 +399,129 @@ app.get("/carrinho_livroDEL/:id", async (req, res) => {
     }else{
         await dbCarrinho_livro.deletarCarrinho_livro(id);
         res.json({mensagem: "carrinho_livro deletado com sucesso"});
+    }
+})
+
+
+//================================================================Livro_pedido==========================================================//
+//Criando uma rota para utilizar a função mostrarLivros_pedido
+//Caminho URL: http://localhost:11915/livro_pedido
+app.get("/livro_pedido", async (req, res) => {
+    res.json(await dbLivro_pedido.mostrarLivros_pedido);
+})
+
+//Criando uma rota para utilizar a função mostrarLivro_pedido
+// "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/livro_pedido/id
+app.get("/livro_pedido/:id", async (req, res) => {
+    
+    const id = req.params.id;
+
+    if (parseInt(id) != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const estoque = await dbLivro_pedido.mostrarLivro_pedido(id);
+        res.json(estoque);
+
+    }
+
+})
+
+//Rota para função inserirLivro_pedido
+//Caminho URL: http://localhost:11915/livro_pedidoADD?id_livro=x&id_pedido=x
+app.get("/livro_pedidoADD/", async (req, res) => {
+
+    const {id_livro, id_pedido} = req.query; // Pegando os parâmetros da URL
+
+    if(id_livro != parseInt(id_livro)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+    } else if (id_pedido != parseInt(id_pedido)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_pedido'. Escreva um número inteiro para da certo!"})
+
+    } else {
+        //Executando o método inserirLivroNoEstoque
+        await dbLivro_pedido.inserirLivro_pedido(id_livro, id_pedido);
+
+        //Resposta para o usuário
+        res.json({ mensagem: "livro_pedido inserido com sucesso!" }); 
+    }
+})
+
+//Rota para função deletarLivro_pedido
+//Caminho URL: http://localhost:11915/livro_pedidoDEL/id
+app.get("/livro_pedidoDEL/:id", async (req, res) => {
+
+    const id = req.params.id
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await dbLivro_pedido.deletarLivro_pedido(id);
+        res.json({mensagem: "livro_pedido deletado com sucesso"});
+    }
+})
+
+//================================================================Livro_pedido==========================================================//
+//Criando uma rota para utilizar a função mostrarLivros_pedido
+//Caminho URL: http://localhost:11915/livro_pedido
+app.get("/livro_pedido", async (req, res) => {
+    res.json(await dbLivro_pedido.mostrarLivros_pedido);
+})
+
+//Criando uma rota para utilizar a função mostrarLivro_pedido
+// "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/livro_pedido/id
+app.get("/livro_pedido/:id", async (req, res) => {
+    
+    const id = req.params.id;
+
+    if (parseInt(id) != id) {
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    } else {
+        const estoque = await dbLivro_pedido.mostrarLivro_pedido(id);
+        res.json(estoque);
+
+    }
+
+})
+
+//Rota para função inserirLivro_pedido
+//Caminho URL: http://localhost:11915/livro_pedidoADD?id_livro=x&id_pedido=x
+app.get("/livro_pedidoADD/", async (req, res) => {
+
+    const {id_livro, id_pedido} = req.query; // Pegando os parâmetros da URL
+
+    if(id_livro != parseInt(id_livro)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+    } else if (id_pedido != parseInt(id_pedido)){
+
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_pedido'. Escreva um número inteiro para da certo!"})
+
+    } else {
+        //Executando o método inserirLivroNoEstoque
+        await dbLivro_pedido.inserirLivro_pedido(id_livro, id_pedido);
+
+        //Resposta para o usuário
+        res.json({ mensagem: "livro_pedido inserido com sucesso!" }); 
+    }
+})
+
+//Rota para função deletarLivro_pedido
+//Caminho URL: http://localhost:11915/livro_pedidoDEL/id
+app.get("/livro_pedidoDEL/:id", async (req, res) => {
+
+    const id = req.params.id
+
+    if(id != parseInt(id)){
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
+    }else{
+        await dbLivro_pedido.deletarLivro_pedido(id);
+        res.json({mensagem: "livro_pedido deletado com sucesso"});
     }
 })
 
