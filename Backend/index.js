@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const dbLivro = require("./livro") //importa as funções do arquivo livro.js
+const dbCarrinho = require("./carrinho") 
 
 const port = process.env.PORT;
 
@@ -98,3 +99,77 @@ app.get("/livroDEL/:id", async (req, res) => {
 app.listen(port)
 
 console.log("Backend rodando")
+
+//Rotas para Carrinho
+
+//Mostrar a tabela
+app.get("/carrinhos", async (req, res) => {
+    const carrinhos = await dbCarrinho.mostrarCarrinhos();
+    res.json(carrinhos);
+})
+
+
+//Mostrar o carrinho de cada usuário
+app.get("/carrinhoUsuario/:id", async (req, res) => {
+    const id = req.params.id
+    const idInt = parseInt(id)
+    if(id != idInt){
+        res.json({mensagem: "Parâmetro Inválido"})
+    }else{
+        const carrinhoUsuario = await dbCarrinho.mostrarCarrinhoUsuario(id);
+        res.json(carrinhoUsuario);
+    }
+})
+
+
+//Inserir novo carrinho
+app.get("/novoCarrinho", async (req, res) => {
+    const {id_usuario, id_livro, quantidade} = req.query; //Pegando os parâmetros da URL
+
+    console.log("Id do usuário: " + id_usuario);
+    const idUsuarioInt = parseInt(id_usuario);
+    console.log("Id do livro: " + id_livro);
+    const idLivroInt = parseInt(id_livro);
+    console.log("Quantidade: " + quantidade);
+    const quantidadeInt = parseInt(quantidade);
+
+    if(id_usuario != idUsuarioInt){
+        res.json({mensagem: "Parâmetros Inválidos!"})
+    } else if (id_livro != idLivroInt){
+        res.json({mensagem: "Parâmetros Inválidos"})
+    } else if (quantidade != quantidadeInt){
+            res.json({mensagem: "Parâmetros Inválidos"})
+    } else {
+        const novoCarrinho = await dbCarrinho.inserirCarrinho(idUsuarioInt, idLivroInt, quantidade);
+        res.json(novoCarrinho);
+    }
+})
+
+
+//Deletar um item do carrinho de um determinado usuário
+app.get("/deletarCarrinho/:id", async (req, res) => {
+
+    const {id_usuario, id_livro} = req.query; //Pegando os parâmetros da URL
+
+    console.log("Id do usuário: " + id_usuario)
+    const idUsuarioInt = parseInt(id_usuario);
+    console.log("Id do livro: " + id_livro)
+    const idLivroInt = parseInt(id_livro)
+
+
+
+    if(id_usuario != idUsuarioInt){
+        res.json({mensagem: "Parâmetros Inválidos!"})
+    } else if (id_livro != idLivroInt){
+        res.json({mensagem: "Parâmetros Inválidos"})
+    } else {
+        const carrinhoDeletado = await dbCarrinho.deletarLivroCarrinho(idUsuarioInt, idLivroInt);
+        res.json(carrinhoDeletado);
+    }
+})
+
+
+
+
+
+
