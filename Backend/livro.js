@@ -64,11 +64,11 @@ async function mostrarLivro(id){
     return res.rows;
 }
 
-async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem) {
+async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem]);
+    await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem]);
 }
 
 async function modificarPrecoLivro(id, preco) {

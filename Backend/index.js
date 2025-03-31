@@ -53,7 +53,7 @@ app.get("/livro/:id", async (req, res) => {
 //Rota para função inserirLivro
 //Caminha URL: http://localhost:11915/livroADD?nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
 app.get("/livroADD/", async (req, res) => {
-    const { nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem } = req.query; // Pegando os parâmetros da URL
+    const { nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem } = req.query; // Pegando os parâmetros da URL
 
     if(preco != parseFloat(preco)){
         res.json({mensagem: "Você digitou alguma letra no campo 'preco', digita apenas números"})
@@ -62,7 +62,7 @@ app.get("/livroADD/", async (req, res) => {
     } else if (isbn != parseInt(isbn)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
     } else {
-        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem);//Executando o método inserirLivro
+        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem);//Executando o método inserirLivro
     res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
     }
 })
