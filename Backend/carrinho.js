@@ -38,58 +38,68 @@ async function connect() {
 }
 
 //Função para mostrar os departamentos
-async function mostrarLivros(){
+async function mostrarCarrinhos(){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro");
+    const res = await client.query("SELECT * FROM Carrinho");
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function mostrarLivrosFiltros(params){
-    //Criação a conexão com o banco de dados
-    const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("")
-    
-}
-
-async function mostrarLivro(id){
+async function mostrarCarrinhoUsuario(id_usuario){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro WHERE id=$1", [id]);
+    const res = await client.query("SELECT * FROM Carrinho WHERE id_usuario=$1", [id_usuario]);
     //Retornando os resultados por linhas
     return res.rows;
 }
 
-async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem) {
-    //Criando a conexão com o banco de dados 
+
+async function inserirCarrinho(id_usuario, id_livro, quantidade) {
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, data_publicacao, imagem]);
+
+    try {
+        // Verifica se o usuário existe
+        const usuarioExiste = await client.query("SELECT id_usuario FROM Usuarios WHERE id = $1", [id_usuario]);
+        if (usuarioExiste.rowCount === 0) {
+            throw new Error("Usuário não encontrado!");
+        }
+
+        // Verifica se o livro existe
+        const livroExiste = await client.query("SELECT preco_unitario FROM Livro WHERE id = $1", [id_livro]);
+        if (livroExiste.rowCount === 0) {
+            throw new Error("Livro não encontrado!");
+        }
+        const precoLivro = livroExiste.rows[0].preco_unitario;
+
+        // Inserindo no carrinho, pois ambos existem
+        await client.query(
+            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)",
+            [id_usuario, id_livro, precoLivro, quantidade]
+        );
+        return res.rows;
+        
+    } catch (err) {
+        return { erro: err.message };
+    } finally {
+        await client.end();
+    }
 }
 
-async function modificarPrecoLivro(id, preco) {
-    //Criando a conexão com o banco de dados
-    const client = await connect();
-    //Argumentando o código SQL
-    await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
-}
 
-async function deletarLivro(id) {
+async function deletarLivroCarrinho(id_usuario, id_livro) {
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("DELETE FROM Livro WHERE id=$1", [id])
+    await client.query("DELETE FROM Carrinho WHERE id_usuario=$1 AND id_livro=$2", [id_usuario, id_livro])
 }
 
 //exportando as funções desse arquivo para outro arquivo 
 module.exports = {
-    mostrarLivros,
-    mostrarLivro,
-    inserirLivro,
-    modificarPrecoLivro,
-    deletarLivro
+    mostrarCarrinhoUsuario,
+    mostrarCarrinhos,
+    inserirCarrinho,
+    deletarLivroCarrinho
 }
