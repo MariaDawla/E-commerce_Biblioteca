@@ -43,7 +43,7 @@ async function mostrar_Livros_no_Estoque(){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Estoque");
+    const res = await client.query("SELECT * FROM estoque");
     //Retornando os resultados por linhas
     return res.rows;
 }
@@ -52,7 +52,7 @@ async function mostrar_Livro_no_Estoque(id){
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Estoque WHERE id=$1", [id]);
+    const res = await client.query("SELECT * FROM estoque WHERE id=$1", [id]);
     //Retornando os resultados por linhas
     return res.rows;
 }
@@ -61,15 +61,15 @@ async function inserirLivroNoEstoque(id_livro, quantidade) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Estoque (id_livro, quantidade, id_livro) values ($1, $2, $3)", [id_livro, quantidade, id_livro]);
+    await client.query("INSERT INTO estoque (id_livro, quantidade, id_livro) values ($1, $2, $3)", [id_livro, quantidade, id_livro]);
 }
 
-async function modificar_Quantidade_do_Livro_no_Estoque(id, quantidade) {
+async function modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade) {
     //Criando a conexão com o banco de dados
     const client = await connect();
 
     //Verificação e execução de comando sql
-    await client.query("UPDATE Estoque SET quantidade=$1 WHERE id=$2", [quantidade, id])
+    await client.query("UPDATE estoque SET quantidade=quantidade-$1 WHERE id_livro=$2", [quantidade, id_livro])
 
 }
 
@@ -77,7 +77,7 @@ async function deletar_Livro_no_Estoque(id) {
     //Criando a conexão com banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("DELETE FROM Estoque WHERE id=$1", [id])
+    await client.query("DELETE FROM estoque WHERE id=$1", [id])
 }
 
 //exportando as funções desse arquivo para outro arquivo 
