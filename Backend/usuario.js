@@ -21,11 +21,6 @@ async function connect() {
     const client = await pool.connect();
     console.log("Banco de Dados conectado")
 
-    //Teste
-    const res = await client.query("select now()")
-    console.log(res.rows[0]);
-    client.release();
-
     //"global": área global usada para guardar. Nesse caso vai está guardando o objeto connection
     global.connection = pool;
 
@@ -59,7 +54,7 @@ async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, ba
     //Criando a conexão com o banco de dados 
     const client = await connect();
     //Argumentando o código SQL
-    await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
+    await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
 }
 
 async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep) {
