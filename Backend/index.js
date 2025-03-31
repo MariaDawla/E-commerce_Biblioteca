@@ -111,7 +111,7 @@ app.get("/livroDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarUsuarios
 //Caminho URL: http://localhost:11915/usuario
 app.get("/usuario", async (req, res) => {
-    res.json(await dbUsuario.mostrarUsuarios);
+    res.json(await dbUsuario.mostrarUsuarios());
 })
 
 //Criando uma rota para utilizar a função mostrarUsuario (com parâmetro)
@@ -192,7 +192,7 @@ app.get("/UsuarioDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrar_Livros_no_Estoque
 //Caminho URL: http://localhost:11915/estoque
 app.get("/estoque", async (req, res) => {
-    res.json(await dbEstoque.mostrar_Livros_no_Estoque);
+    res.json(await dbEstoque.mostrar_Livros_no_Estoque());
 })
 
 //Criando uma rota para utilizar a função mostrar_Livro_no_Estoque
@@ -274,7 +274,7 @@ app.get("/estoqueDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarPedidos
 //Caminho URL: http://localhost:11915/pedido
 app.get("/pedido", async (req, res) => {
-    res.json(await dbPedido.mostrarPedidos);
+    res.json(await dbPedido.mostrarPedidos());
 })
 
 //Criando uma rota para utilizar a função mostrarPedido
@@ -295,10 +295,10 @@ app.get("/pedido/:id", async (req, res) => {
 })
 
 //Rota para função inserirPedido
-//Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&preco_unitario=x&quantidade=x
-app.get("/estoqueADD/", async (req, res) => {
+//Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&quantidade=x
+app.get("/pedidoADD/", async (req, res) => {
 
-    const {id_usuario, id_livro, preco_unitario, quantidade} = req.query; // Pegando os parâmetros da URL
+    const {id_usuario, id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
 
     //Condições
     if (id_usuario != parseInt(id_usuario)){
@@ -309,15 +309,12 @@ app.get("/estoqueADD/", async (req, res) => {
 
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
 
-    }else if(preco_unitario != parseFloat(preco_unitario)){
-
-        res.json({mensagem: "Você escreveu algo diferente de um número, no campo 'preco_unitario'. Escreva um número para da certo!"})
-
-    } else if (quantidade != parseInt(quantidade)){
+    }  else if (quantidade != parseInt(quantidade)){
 
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
 
     } else {
+        const preco_unitario = await query("SELECT preco_unitario FROM Livro WHERE id=$1", [id_livro])
 
         //Executando o método inserirPedido
         await dbPedido.inserirPedido(id_usuario, id_livro, preco_unitario, quantidade);
@@ -345,7 +342,7 @@ app.get("/pedidoDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarCarrinhos_livro
 //Caminho URL: http://localhost:11915/carrinho_livro
 app.get("/carrinho_livro", async (req, res) => {
-    res.json(await dbCarrinho_livro.mostrarCarrinhos_livro);
+    res.json(await dbCarrinho_livro.mostrarCarrinhos_livro());
 })
 
 //Criando uma rota para utilizar a função mostrarCarrinho_livro
@@ -407,7 +404,7 @@ app.get("/carrinho_livroDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarLivros_pedido
 //Caminho URL: http://localhost:11915/livro_pedido
 app.get("/livro_pedido", async (req, res) => {
-    res.json(await dbLivro_pedido.mostrarLivros_pedido);
+    res.json(await dbLivro_pedido.mostrarLivros_pedido());
 })
 
 //Criando uma rota para utilizar a função mostrarLivro_pedido
@@ -468,7 +465,7 @@ app.get("/livro_pedidoDEL/:id", async (req, res) => {
 //Criando uma rota para utilizar a função mostrarUsuarios_pedido
 //Caminho URL: http://localhost:11915/usuario_pedido
 app.get("/usuario_pedido", async (req, res) => {
-    res.json(await dbUsuario_pedido.mostrarUsuarios_pedido);
+    res.json(await dbUsuario_pedido.mostrarUsuarios_pedido());
 })
 
 //Criando uma rota para utilizar a função mostrarUsuario_pedido
@@ -511,7 +508,7 @@ app.get("/usuario_pedidoADD/", async (req, res) => {
     }
 })
 
-//Rota para função deletarUsuario_pedido
+//Rota para função deletarLivro_pedido
 //Caminho URL: http://localhost:11915/usuario_pedidoDEL/id
 app.get("/usuario_pedidoDEL/:id", async (req, res) => {
 

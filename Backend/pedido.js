@@ -1,9 +1,10 @@
+const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
+
 //Função para conectar ao banco de dados
 async function connect() {
 
     //Importando o Poll da biblioteca pg(postgresql)
     const {Pool} = require("pg");
-
 
     //Configurando o Pool, ou seja, colocando todas as informações necessárias para criar a conexão
     const pool = new Pool({
@@ -58,8 +59,16 @@ async function mostrarPedido(id){
 async function inserirPedido(id_usuario, id_livro, preco_unitario, quantidade) {
     //Criando a conexão com o banco de dados 
     const client = await connect();
+
+    //AQUI
+    preco_total = preco_unitario * quantidade
+
     //Argumentando o código SQL
-    await client.query("INSERT INTO Pedido (id_usuario, id_livro, preco_unitario, quantidade, id_usuario, id_livro) values ($1, $2, $3, $4, $5, $6)", [id_usuario, id_livro, preco_unitario, quantidade, id_usuario, id_livro]);
+    await client.query("INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)", [id_usuario, id_livro, preco_total, quantidade]);
+
+    //Atualizar o estoque
+    dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade)
+
 }
 
 async function deletarPedido(id) {
