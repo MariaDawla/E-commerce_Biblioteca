@@ -34,12 +34,18 @@ async function connect() {
 
 //Função para mostrar os departamentos
 async function mostrarLivros(){
-    //Criando a conexão com banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro");
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+        //Criando a conexão com banco de dados 
+        const client = await connect();
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Livro");
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release
+    }
+    
 }
 
 async function mostrarLivrosFiltros(params){
@@ -51,33 +57,56 @@ async function mostrarLivrosFiltros(params){
 }
 
 async function mostrarLivro(id){
-    //Criando a conexão com banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Livro WHERE id=$1", [id]);
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+         //Criando a conexão com banco de dados 
+        const client = await connect();
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Livro WHERE id=$1", [id]);
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release
+    }
+   
 }
 
 async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) {
-    //Criando a conexão com o banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem]);
+    try{
+         //Criando a conexão com o banco de dados 
+        const client = await connect();
+        //Argumentando o código SQL
+        await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem]);
+    }
+    finally{
+        client.release
+    }
+   
 }
 
 async function modificarPrecoLivro(id, preco) {
-    //Criando a conexão com o banco de dados
-    const client = await connect();
-    //Argumentando o código SQL
-    await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
+    try{
+         //Criando a conexão com o banco de dados
+        const client = await connect();
+        //Argumentando o código SQL
+        await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
+    }
+    finally{
+        client.release
+    }
 }
 
 async function deletarLivro(id) {
-    //Criando a conexão com banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    await client.query("DELETE FROM Livro WHERE id=$1", [id])
+    try{
+         //Criando a conexão com banco de dados 
+        const client = await connect();
+        //Argumentando o código SQL
+        await client.query("DELETE FROM Livro WHERE id=$1", [id])
+    }
+    finally{
+        client.release
+    }
+   
 }
 
 //exportando as funções desse arquivo para outro arquivo 
