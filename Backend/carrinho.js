@@ -34,27 +34,38 @@ async function connect() {
 
 //Função para mostrar os departamentos
 async function mostrarCarrinhos(){
-    //Criando a conexão com banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Carrinho");
-    //Retornando os resultados por linhas
-    return res.rows;
+    const client = await pool.connect();
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Carrinho");
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+ 
 }
 
 async function mostrarCarrinhoUsuario(id_usuario){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Carrinho WHERE id_usuario=$1", [id_usuario]);
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Carrinho WHERE id_usuario=$1", [id_usuario]);
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+    
 }
 
 
-async function inserirCarrinho(id_usuario, id_livro, quantidade) {
+async function inserirCarrinho(id_usuario, id_livro) {
     const client = await connect();
-
     try {
         // Verifica se o usuário existe
         const usuarioExiste = await client.query("SELECT id_usuario FROM Usuarios WHERE id = $1", [id_usuario]);
@@ -71,24 +82,31 @@ async function inserirCarrinho(id_usuario, id_livro, quantidade) {
 
         // Inserindo no carrinho, pois ambos existem
         await client.query(
-            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)",
-            [id_usuario, id_livro, precoLivro, quantidade]
+            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario) values ($1, $2, $3)",
+            [id_usuario, id_livro, precoLivro]
         );
         return res.rows;
         
-    } catch (err) {
+    } 
+    catch (err) {
         return { erro: err.message };
-    } finally {
-        await client.end();
+    } 
+    finally {
+        client.release()
     }
 }
 
 
 async function deletarLivroCarrinho(id_usuario, id_livro) {
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("DELETE FROM Carrinho WHERE id_usuario=$1 AND id_livro=$2", [id_usuario, id_livro])
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        await client.query("DELETE FROM Carrinho WHERE id_usuario=$1 AND id_livro=$2", [id_usuario, id_livro])
+    }
+    finally{
+        client.release()
+    }
 }
 
 //exportando as funções desse arquivo para outro arquivo 
