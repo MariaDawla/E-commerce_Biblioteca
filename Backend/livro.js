@@ -101,7 +101,7 @@ async function mostrarLivro(id){
 async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) {
     const client = await connect();
     try{
-         //Criando a conexão com o banco de dados 
+        //Criando a conexão com o banco de dados 
         //Argumentando o código SQL
         await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", [nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem]);
     }
@@ -114,7 +114,7 @@ async function inserirLivro(nome, titulo_original, genero, idioma, autor, iditor
 async function modificarPrecoLivro(id, preco) {
     const client = await connect();
     try{
-         //Criando a conexão com o banco de dados
+        //Criando a conexão com o banco de dados
         //Argumentando o código SQL
         await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
     }
