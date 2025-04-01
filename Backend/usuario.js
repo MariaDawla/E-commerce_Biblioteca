@@ -22,11 +22,6 @@ async function connect() {
     const client = await pool.connect();
     console.log("Banco de Dados conectado")
 
-    //Teste
-    const res = await client.query("select now()")
-    console.log(res.rows[0]);
-    client.release();
-
     //"global": área global usada para guardar. Nesse caso vai está guardando o objeto connection
     global.connection = pool;
 
@@ -81,6 +76,7 @@ async function fazerLogin(email, senha){
 
 async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
     const client = await connect();
+
     try{
         //Criando a conexão com o banco de dados 
         //Argumentando o código SQL
