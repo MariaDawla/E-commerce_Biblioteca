@@ -72,8 +72,9 @@ app.get("/livro/:id", async (req, res) => {
 
 //Rota para função inserirLivro
 //Caminha URL: http://localhost:11915/livroADD?nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
+app.use(express.json());
 app.post("/livroADD/", async (req, res) => {
-    const { nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem } = req.query; // Pegando os parâmetros da URL
+    const { nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem } = req.body; // Pegando os parâmetros da URL
 
     if(preco != parseFloat(preco)){
         res.json({mensagem: "Você digitou alguma letra no campo 'preco', digita apenas números"})
@@ -82,15 +83,16 @@ app.post("/livroADD/", async (req, res) => {
     } else if (isbn != parseInt(isbn)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
     } else {
-        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem);//Executando o método inserirLivro
+        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem);//Executando o método inserirLivro
     res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
     }
 })
 
 //Rota para função modificarPrecoLivro
 //Caminho URL: http://localhost:11915/livroUPT?id=x&preco=x
+app.use(express.json());
 app.put("/livroUPT/", async (req, res) => {
-    const {id, preco} = req.query; //Pegando os parâmetros da URL
+    const {id, preco} = req.body; //Pegando os parâmetros da URL
 
     console.log("id da URL: "+id)
     console.log("preço da URL: "+preco)
@@ -114,7 +116,7 @@ app.put("/livroUPT/", async (req, res) => {
 
 //Rota para função deletarLivro
 //Caminho URL: http://localhost:11915/livroDEL/id
-app.delete("/livroDEL/:id", async (req, res) => {
+app.get("/livroDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -162,9 +164,10 @@ app.get("/usuario/:id", async (req, res) => {
 
 //Rota para função inserirUsuario
 //Caminho URL: http://localhost:11915/usuarioADD?nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+app.use(express.json());
 app.post("/usuarioADD/", async (req, res) => {
 
-    const { nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep } = req.query; // Pegando os parâmetros da URL
+    const { nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep } = req.body; // Pegando os parâmetros da URL
 
     if(num_endereco != parseInt(num_endereco)){
 
@@ -182,10 +185,11 @@ app.post("/usuarioADD/", async (req, res) => {
 
 //Rota para função modificarUsuario
 //Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+app.use(express.json());
 app.put("/usuarioUPT/", async (req, res) => {
 
     //Pegando os parâmetros da URL
-    const {id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep} = req.query; 
+    const {id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep} = req.body; 
 
     if(id != parseInt(id)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id'. Escreva um número inteiro para da certo!"})
@@ -202,7 +206,7 @@ app.put("/usuarioUPT/", async (req, res) => {
 
 //Rota para função deletarUsuario
 //Caminho URL: http://localhost:11915/usuarioDEL/id
-app.delete("/UsuarioDEL/:id", async (req, res) => {
+app.get("/UsuarioDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -241,9 +245,10 @@ app.get("/estoque/:id", async (req, res) => {
 
 //Rota para função inserirLivroNoEstoque
 //Caminho URL: http://localhost:11915/estoqueADD?id_livro=x&quantidade=x
+app.use(express.json());
 app.post("/estoqueADD/", async (req, res) => {
 
-    const {id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
+    const {id_livro, quantidade} = req.body; // Pegando os parâmetros da URL
 
     if(id_livro != parseInt(id_livro)){
 
@@ -264,10 +269,11 @@ app.post("/estoqueADD/", async (req, res) => {
 
 //Rota para função modificar_Quantidade_do_Livro_no_Estoque
 //Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+app.use(express.json());
 app.put("/estoqueUPT/", async (req, res) => {
 
     //Pegando os parâmetros da URL
-    const {id, quantidade} = req.query; 
+    const {id, quantidade} = req.body; 
 
     if(id != parseInt(id)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id'. Escreva um número inteiro para da certo!"})
@@ -284,7 +290,7 @@ app.put("/estoqueUPT/", async (req, res) => {
 
 //Rota para função deletarEstoque
 //Caminho URL: http://localhost:11915/estoqueDEL/id
-app.delete("/estoqueDEL/:id", async (req, res) => {
+app.get("/estoqueDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -323,9 +329,10 @@ app.get("/pedido/:id", async (req, res) => {
 
 //Rota para função inserirPedido
 //Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&quantidade=x
+app.use(express.json());
 app.post("/pedidoADD/", async (req, res) => {
 
-    const {id_usuario, id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
+    const {id_usuario, id_livro, quantidade} = req.body; // Pegando os parâmetros da URL
 
     //Condições
     if (id_usuario != parseInt(id_usuario)){
@@ -353,7 +360,7 @@ app.post("/pedidoADD/", async (req, res) => {
 
 //Rota para função deletarPedido
 //Caminho URL: http://localhost:11915/pedidoDEL/id
-app.delete("/pedidoDEL/:id", async (req, res) => {
+app.get("/pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -391,9 +398,10 @@ app.get("/carrinho_livro/:id", async (req, res) => {
 
 //Rota para função inserirCarrinho_livro
 //Caminho URL: http://localhost:11915/carrinho_livroADD?id_carrinho=x&id_livro=x
+app.use(express.json());
 app.post("/carrinho_livroADD/", async (req, res) => {
 
-    const {id_carrinho, id_livro} = req.query; // Pegando os parâmetros da URL
+    const {id_carrinho, id_livro} = req.body; // Pegando os parâmetros da URL
 
     if(id_livro != parseInt(id_livro)){
 
@@ -414,7 +422,7 @@ app.post("/carrinho_livroADD/", async (req, res) => {
 
 //Rota para função deletarCarrinho_livro
 //Caminho URL: http://localhost:11915/carrinho_livroDEL/id
-app.delete("/carrinho_livroDEL/:id", async (req, res) => {
+app.get("/carrinho_livroDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -453,9 +461,10 @@ app.get("/livro_pedido/:id", async (req, res) => {
 
 //Rota para função inserirLivro_pedido
 //Caminho URL: http://localhost:11915/livro_pedidoADD?id_livro=x&id_pedido=x
+app.use(express.json());
 app.post("/livro_pedidoADD/", async (req, res) => {
 
-    const {id_livro, id_pedido} = req.query; // Pegando os parâmetros da URL
+    const {id_livro, id_pedido} = req.body; // Pegando os parâmetros da URL
 
     if(id_livro != parseInt(id_livro)){
 
@@ -476,7 +485,7 @@ app.post("/livro_pedidoADD/", async (req, res) => {
 
 //Rota para função deletarLivro_pedido
 //Caminho URL: http://localhost:11915/livro_pedidoDEL/id
-app.delete("/livro_pedidoDEL/:id", async (req, res) => {
+app.get("/livro_pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -514,9 +523,10 @@ app.get("/usuario_pedido/:id", async (req, res) => {
 
 //Rota para função inserirLivro_pedido
 //Caminho URL: http://localhost:11915/usuario_pedidoADD?id_usuario=x&id_pedido=x
+app.use(express.json());
 app.post("/usuario_pedidoADD/", async (req, res) => {
 
-    const {id_usuario, id_pedido} = req.query; // Pegando os parâmetros da URL
+    const {id_usuario, id_pedido} = req.body; // Pegando os parâmetros da URL
 
     if(id_usuario != parseInt(id_usuario)){
 
@@ -537,7 +547,7 @@ app.post("/usuario_pedidoADD/", async (req, res) => {
 
 //Rota para função deletarLivro_pedido
 //Caminho URL: http://localhost:11915/usuario_pedidoDEL/id
-app.delete("/usuario_pedidoDEL/:id", async (req, res) => {
+app.get("/usuario_pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -576,9 +586,9 @@ app.get("/carrinhoUsuario/:id", async (req, res) => {
 
 
 //Inserir novo carrinho
+app.use(express.json());
 app.post("/novoCarrinho", async (req, res) => {
-    const {id_usuario, id_livro} = req.query; //Pegando os parâmetros da URL
-
+    const {id_usuario, id_livro} = req.body; //Pegando os parâmetros da URL
     console.log("Id do usuário: " + id_usuario);
     const idUsuarioInt = parseInt(id_usuario);
     console.log("Id do livro: " + id_livro);
@@ -598,7 +608,7 @@ app.post("/novoCarrinho", async (req, res) => {
 
 
 //Deletar um item do carrinho de um determinado usuário
-app.delete("/deletarCarrinho/:id", async (req, res) => {
+app.get("/deletarCarrinho/:id", async (req, res) => {
 
     const {id_usuario, id_livro} = req.query; //Pegando os parâmetros da URL
 
