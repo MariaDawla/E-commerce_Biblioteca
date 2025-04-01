@@ -13,6 +13,7 @@ async function connect() {
         database: process.env.database,
         password: process.env.password,
         port: process.env.port,
+        max: 20,
         ssl: {
             rejectUnauthorized: false,
         },
@@ -57,7 +58,7 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
     try{
          //Criação a conexão com o banco de dados
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM livros WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL)", [nome, titulo_original, genero, idioma, autor, editora])
+        const res = await client.query("SELECT * FROM livro WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL)", [nome, titulo_original, genero, idioma, autor, editora])
         return res.rows;
     }
     finally{
@@ -68,7 +69,7 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
 async function mostrarIdiomas(){
     const client = await connect();
     try{
-        const res = await client.query("SELECT DISTINCT idioma FROM livros")
+        const res = await client.query("SELECT DISTINCT idioma FROM livro")
         return res.rows;
     }
     finally{
@@ -79,7 +80,7 @@ async function mostrarIdiomas(){
 async function mostrarGeneros(){
     const client = await connect();
     try{
-        const res = await client.query("SELECT DISTINCT genero FROM livros")
+        const res = await client.query("SELECT DISTINCT genero FROM livro")
         return res.rows;
     }
     finally{

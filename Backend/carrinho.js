@@ -13,6 +13,7 @@ async function connect() {
         database: process.env.database,
         password: process.env.password,
         port: process.env.port,
+        max: 20,
         ssl: {
             rejectUnauthorized: false,
         },
