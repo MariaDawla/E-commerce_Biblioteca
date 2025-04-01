@@ -67,6 +67,17 @@ async function mostrarUsuario(id){
    
 }
 
+async function fazerLogin(email, senha){
+    const client = await connect();
+    try{
+        const res = await client.query("SELECT * FROM usuario WHERE email=$1 AND senha=$2", [email, senha]);
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+}
+
 async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
     const client = await connect();
     try{
@@ -145,5 +156,6 @@ module.exports = {
     mostrarUsuario,
     inserirUsuario,
     modificarUsuario,
-    deletarUsuario
+    deletarUsuario,
+    fazerLogin
 }

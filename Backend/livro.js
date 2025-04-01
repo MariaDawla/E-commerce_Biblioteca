@@ -50,7 +50,6 @@ async function mostrarLivros(){
     finally{
         client.release()
     }
-    
 }
 
 async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora){
@@ -58,15 +57,36 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
     try{
          //Criação a conexão com o banco de dados
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM livros WHERE (nome=$1 OR $1 IS NULL) AND (titulo_original=$2 OR $2 IS NULL) AND(genero=$3 OR $3 IS NULL) AND (idioma=$4 OR $4 IS NULL) AND (autor=$5 OR $5 IS NULL) AND (editora = $6 OR $6 IS NULL)", [nome, titulo_original, genero, idioma, autor, editora])
+        const res = await client.query("SELECT * FROM livros WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL)", [nome, titulo_original, genero, idioma, autor, editora])
         return res.rows;
     }
     finally{
         client.release()
     }
-
-   
 }
+
+async function mostrarIdiomas(){
+    const client = await connect();
+    try{
+        const res = await client.query("SELECT DISTINCT idioma FROM livros")
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+}
+
+async function mostrarGeneros(){
+    const client = await connect();
+    try{
+        const res = await client.query("SELECT DISTINCT genero FROM livros")
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+}
+
 
 async function mostrarLivro(id){
     const client = await connect();
@@ -127,5 +147,7 @@ module.exports = {
     inserirLivro,
     modificarPrecoLivro,
     deletarLivro,
-    mostrarLivrosFiltros
+    mostrarLivrosFiltros,
+    mostrarGeneros,
+    mostrarIdiomas
 }

@@ -69,7 +69,7 @@ async function mostrarCarrinhoUsuario(id_usuario){
 }
 
 
-async function inserirCarrinho(id_usuario, id_livro, quantidade) {
+async function inserirCarrinho(id_usuario, id_livro) {
     const client = await connect();
     try {
         // Verifica se o usuário existe
@@ -87,8 +87,8 @@ async function inserirCarrinho(id_usuario, id_livro, quantidade) {
 
         // Inserindo no carrinho, pois ambos existem
         await client.query(
-            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)",
-            [id_usuario, id_livro, precoLivro, quantidade]
+            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario) values ($1, $2, $3)",
+            [id_usuario, id_livro, precoLivro]
         );
         return res.rows;
         

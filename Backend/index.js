@@ -40,6 +40,18 @@ app.get("/livros", async(req, res) => {
 
 })
 
+//Criando uma rota para retornar os generos existentes
+app.get("/generos", async(req, res) => {
+    const generos = await dbLivro.mostrarGeneros();
+    res.json(generos);
+})
+
+//Criando uma rota para retornar os idiomas existentes
+app.get("/idiomas", async(req, res) => {
+    const idiomas = await dbLivro.mostrarIdiomas();
+    res.json(idiomas);
+})
+
 //Criando uma rota para utilizar a função mostrarLivro
 // "/:id" usado como parematro.
 app.get("/livro/:id", async (req, res) => {
@@ -60,7 +72,7 @@ app.get("/livro/:id", async (req, res) => {
 
 //Rota para função inserirLivro
 //Caminha URL: http://localhost:11915/livroADD?nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
-app.get("/livroADD/", async (req, res) => {
+app.post("/livroADD/", async (req, res) => {
     const { nome, titulo_original, genero, idioma, autor, iditora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem } = req.query; // Pegando os parâmetros da URL
 
     if(preco != parseFloat(preco)){
@@ -77,7 +89,7 @@ app.get("/livroADD/", async (req, res) => {
 
 //Rota para função modificarPrecoLivro
 //Caminho URL: http://localhost:11915/livroUPT?id=x&preco=x
-app.get("/livroUPT/", async (req, res) => {
+app.put("/livroUPT/", async (req, res) => {
     const {id, preco} = req.query; //Pegando os parâmetros da URL
 
     console.log("id da URL: "+id)
@@ -102,7 +114,7 @@ app.get("/livroUPT/", async (req, res) => {
 
 //Rota para função deletarLivro
 //Caminho URL: http://localhost:11915/livroDEL/id
-app.get("/livroDEL/:id", async (req, res) => {
+app.delete("/livroDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -121,6 +133,12 @@ app.get("/livroDEL/:id", async (req, res) => {
 //Caminho URL: http://localhost:11915/usuario
 app.get("/usuario", async (req, res) => {
     res.json(await dbUsuario.mostrarUsuarios());
+})
+
+app.get("/login", async(req, res) => {
+    const { email, senha } = req.query;
+    const usuarioLogado = await dbUsuario.fazerLogin(email, senha)
+    res.json(usuarioLogado);
 })
 
 //Criando uma rota para utilizar a função mostrarUsuario (com parâmetro)
@@ -144,7 +162,7 @@ app.get("/usuario/:id", async (req, res) => {
 
 //Rota para função inserirUsuario
 //Caminho URL: http://localhost:11915/usuarioADD?nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
-app.get("/usuarioADD/", async (req, res) => {
+app.post("/usuarioADD/", async (req, res) => {
 
     const { nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep } = req.query; // Pegando os parâmetros da URL
 
@@ -164,7 +182,7 @@ app.get("/usuarioADD/", async (req, res) => {
 
 //Rota para função modificarUsuario
 //Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
-app.get("/usuarioUPT/", async (req, res) => {
+app.put("/usuarioUPT/", async (req, res) => {
 
     //Pegando os parâmetros da URL
     const {id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep} = req.query; 
@@ -184,7 +202,7 @@ app.get("/usuarioUPT/", async (req, res) => {
 
 //Rota para função deletarUsuario
 //Caminho URL: http://localhost:11915/usuarioDEL/id
-app.get("/UsuarioDEL/:id", async (req, res) => {
+app.delete("/UsuarioDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -223,7 +241,7 @@ app.get("/estoque/:id", async (req, res) => {
 
 //Rota para função inserirLivroNoEstoque
 //Caminho URL: http://localhost:11915/estoqueADD?id_livro=x&quantidade=x
-app.get("/estoqueADD/", async (req, res) => {
+app.post("/estoqueADD/", async (req, res) => {
 
     const {id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
 
@@ -246,7 +264,7 @@ app.get("/estoqueADD/", async (req, res) => {
 
 //Rota para função modificar_Quantidade_do_Livro_no_Estoque
 //Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
-app.get("/estoqueUPT/", async (req, res) => {
+app.put("/estoqueUPT/", async (req, res) => {
 
     //Pegando os parâmetros da URL
     const {id, quantidade} = req.query; 
@@ -266,7 +284,7 @@ app.get("/estoqueUPT/", async (req, res) => {
 
 //Rota para função deletarEstoque
 //Caminho URL: http://localhost:11915/estoqueDEL/id
-app.get("/estoqueDEL/:id", async (req, res) => {
+app.delete("/estoqueDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -305,7 +323,7 @@ app.get("/pedido/:id", async (req, res) => {
 
 //Rota para função inserirPedido
 //Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&quantidade=x
-app.get("/pedidoADD/", async (req, res) => {
+app.post("/pedidoADD/", async (req, res) => {
 
     const {id_usuario, id_livro, quantidade} = req.query; // Pegando os parâmetros da URL
 
@@ -335,7 +353,7 @@ app.get("/pedidoADD/", async (req, res) => {
 
 //Rota para função deletarPedido
 //Caminho URL: http://localhost:11915/pedidoDEL/id
-app.get("/pedidoDEL/:id", async (req, res) => {
+app.delete("/pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -373,7 +391,7 @@ app.get("/carrinho_livro/:id", async (req, res) => {
 
 //Rota para função inserirCarrinho_livro
 //Caminho URL: http://localhost:11915/carrinho_livroADD?id_carrinho=x&id_livro=x
-app.get("/carrinho_livroADD/", async (req, res) => {
+app.post("/carrinho_livroADD/", async (req, res) => {
 
     const {id_carrinho, id_livro} = req.query; // Pegando os parâmetros da URL
 
@@ -396,7 +414,7 @@ app.get("/carrinho_livroADD/", async (req, res) => {
 
 //Rota para função deletarCarrinho_livro
 //Caminho URL: http://localhost:11915/carrinho_livroDEL/id
-app.get("/carrinho_livroDEL/:id", async (req, res) => {
+app.delete("/carrinho_livroDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -435,7 +453,7 @@ app.get("/livro_pedido/:id", async (req, res) => {
 
 //Rota para função inserirLivro_pedido
 //Caminho URL: http://localhost:11915/livro_pedidoADD?id_livro=x&id_pedido=x
-app.get("/livro_pedidoADD/", async (req, res) => {
+app.post("/livro_pedidoADD/", async (req, res) => {
 
     const {id_livro, id_pedido} = req.query; // Pegando os parâmetros da URL
 
@@ -458,7 +476,7 @@ app.get("/livro_pedidoADD/", async (req, res) => {
 
 //Rota para função deletarLivro_pedido
 //Caminho URL: http://localhost:11915/livro_pedidoDEL/id
-app.get("/livro_pedidoDEL/:id", async (req, res) => {
+app.delete("/livro_pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -496,7 +514,7 @@ app.get("/usuario_pedido/:id", async (req, res) => {
 
 //Rota para função inserirLivro_pedido
 //Caminho URL: http://localhost:11915/usuario_pedidoADD?id_usuario=x&id_pedido=x
-app.get("/usuario_pedidoADD/", async (req, res) => {
+app.post("/usuario_pedidoADD/", async (req, res) => {
 
     const {id_usuario, id_pedido} = req.query; // Pegando os parâmetros da URL
 
@@ -519,7 +537,7 @@ app.get("/usuario_pedidoADD/", async (req, res) => {
 
 //Rota para função deletarLivro_pedido
 //Caminho URL: http://localhost:11915/usuario_pedidoDEL/id
-app.get("/usuario_pedidoDEL/:id", async (req, res) => {
+app.delete("/usuario_pedidoDEL/:id", async (req, res) => {
 
     const id = req.params.id
 
@@ -558,31 +576,29 @@ app.get("/carrinhoUsuario/:id", async (req, res) => {
 
 
 //Inserir novo carrinho
-app.get("/novoCarrinho", async (req, res) => {
-    const {id_usuario, id_livro, quantidade} = req.query; //Pegando os parâmetros da URL
+app.post("/novoCarrinho", async (req, res) => {
+    const {id_usuario, id_livro} = req.query; //Pegando os parâmetros da URL
 
     console.log("Id do usuário: " + id_usuario);
     const idUsuarioInt = parseInt(id_usuario);
     console.log("Id do livro: " + id_livro);
     const idLivroInt = parseInt(id_livro);
-    console.log("Quantidade: " + quantidade);
-    const quantidadeInt = parseInt(quantidade);
 
     if(id_usuario != idUsuarioInt){
         res.json({mensagem: "Parâmetros Inválidos!"})
-    } else if (id_livro != idLivroInt){
+    } 
+    else if (id_livro != idLivroInt){
         res.json({mensagem: "Parâmetros Inválidos"})
-    } else if (quantidade != quantidadeInt){
-            res.json({mensagem: "Parâmetros Inválidos"})
-    } else {
-        const novoCarrinho = await dbCarrinho.inserirCarrinho(idUsuarioInt, idLivroInt, quantidade);
+    } 
+    else {
+        const novoCarrinho = await dbCarrinho.inserirCarrinho(idUsuarioInt, idLivroInt);
         res.json(novoCarrinho);
     }
 })
 
 
 //Deletar um item do carrinho de um determinado usuário
-app.get("/deletarCarrinho/:id", async (req, res) => {
+app.delete("/deletarCarrinho/:id", async (req, res) => {
 
     const {id_usuario, id_livro} = req.query; //Pegando os parâmetros da URL
 
