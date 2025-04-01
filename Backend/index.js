@@ -32,6 +32,14 @@ app.get("/livro", async (req, res) => {
     res.json(departamentos);
 })
 
+//Criando uam rota para retornar livros com bases nos flitros
+app.get("/livros", async(req, res) => {
+    const { nome, titulo_original, genero, idioma, autor, editora } = req.query;
+    const livrosFiltrados = await dbLivro.mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora);
+    res.json(livrosFiltrados);
+
+})
+
 //Criando uma rota para utilizar a função mostrarLivro
 // "/:id" usado como parematro.
 app.get("/livro/:id", async (req, res) => {

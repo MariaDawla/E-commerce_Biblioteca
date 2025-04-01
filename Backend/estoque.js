@@ -40,44 +40,71 @@ async function connect() {
 
 //Função para mostrar o estoque
 async function mostrar_Livros_no_Estoque(){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM estoque");
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM estoque");
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+    
 }
 
 async function mostrar_Livro_no_Estoque(id){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM estoque WHERE id=$1", [id]);
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+         //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM estoque WHERE id=$1", [id]);
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+   
 }
 
 async function inserirLivroNoEstoque(id_livro, quantidade) {
-    //Criando a conexão com o banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("INSERT INTO estoque (id_livro, quantidade, id_livro) values ($1, $2, $3)", [id_livro, quantidade, id_livro]);
+    try{
+         //Criando a conexão com o banco de dados 
+        //Argumentando o código SQL
+        await client.query("INSERT INTO estoque (id_livro, quantidade, id_livro) values ($1, $2, $3)", [id_livro, quantidade, id_livro]);
+    }
+    finally{
+        client.release()
+    }
+   
 }
 
 async function modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade) {
-    //Criando a conexão com o banco de dados
     const client = await connect();
-
-    //Verificação e execução de comando sql
-    await client.query("UPDATE estoque SET quantidade=quantidade-$1 WHERE id_livro=$2", [quantidade, id_livro])
-
+    try{
+        //Criando a conexão com o banco de dados
+        //Verificação e execução de comando sql
+        await client.query("UPDATE estoque SET quantidade=quantidade-$1 WHERE id_livro=$2", [quantidade, id_livro])
+    }
+    finally{
+        client.release()
+    }
 }
 
 async function deletar_Livro_no_Estoque(id) {
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("DELETE FROM estoque WHERE id=$1", [id])
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        await client.query("DELETE FROM estoque WHERE id=$1", [id])
+    }
+    finally{
+        client.release()
+    }
+  
 }
 
 //exportando as funções desse arquivo para outro arquivo 

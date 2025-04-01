@@ -53,12 +53,19 @@ async function mostrarLivros(){
     
 }
 
-async function mostrarLivrosFiltros(params){
-    //Criação a conexão com o banco de dados
+async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora){
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("")
-    
+    try{
+         //Criação a conexão com o banco de dados
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM livros WHERE (nome=$1 OR $1 IS NULL) AND (titulo_original=$2 OR $2 IS NULL) AND(genero=$3 OR $3 IS NULL) AND (idioma=$4 OR $4 IS NULL) AND (autor=$5 OR $5 IS NULL) AND (editora = $6 OR $6 IS NULL)", [nome, titulo_original, genero, idioma, autor, editora])
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+
+   
 }
 
 async function mostrarLivro(id){
@@ -119,5 +126,6 @@ module.exports = {
     mostrarLivro,
     inserirLivro,
     modificarPrecoLivro,
-    deletarLivro
+    deletarLivro,
+    mostrarLivrosFiltros
 }

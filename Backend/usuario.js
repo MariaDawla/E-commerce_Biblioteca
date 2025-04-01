@@ -38,33 +38,51 @@ async function connect() {
 
 //Função para mostrar os departamentos
 async function mostrarUsuarios(){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Usuario");
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+          //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Usuario");
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+  
 }
 
 async function mostrarUsuario(id){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Usuario WHERE id=$1", [id]);
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Usuario WHERE id=$1", [id]);
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+   
 }
 
 async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
-    //Criando a conexão com o banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
+    try{
+        //Criando a conexão com o banco de dados 
+        //Argumentando o código SQL
+        await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
+    }
+    finally{
+        client.release()
+    }
 }
 
 async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep) {
-    //Criando a conexão com o banco de dados
     const client = await connect();
+    try{
+    //Criando a conexão com o banco de dados
 
     //Verificação e execução de comando sql
     if(nome != null){
@@ -102,14 +120,23 @@ async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, b
     if(cep != null){
         await client.query("UPDATE Usuario SET cep=$1 WHERE id=$2", [cep, id])
     }
-
+    }
+    finally{
+        client.release()
+    }
 }
 
 async function deletarUsuario(id) {
-    //Criando a conexão com banco de dados 
-    const client = await connect();
-    //Argumentando o código SQL
-    await client.query("DELETE FROM Usuario WHERE id=$1", [id])
+    try{
+          //Criando a conexão com banco de dados 
+        const client = await connect();
+        //Argumentando o código SQL
+        await client.query("DELETE FROM Usuario WHERE id=$1", [id])
+    }
+    finally{
+        client.release()
+    }
+  
 }
 
 //exportando as funções desse arquivo para outro arquivo 

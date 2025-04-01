@@ -39,43 +39,63 @@ async function connect() {
 
 //Função para mostrar os pedidos
 async function mostrarPedidos(){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Pedido");
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+        //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Pedido");
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+    
 }
 
 async function mostrarPedido(id){
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    const res = await client.query("SELECT * FROM Pedido WHERE id=$1", [id]);
-    //Retornando os resultados por linhas
-    return res.rows;
+    try{
+         //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        const res = await client.query("SELECT * FROM Pedido WHERE id=$1", [id]);
+        //Retornando os resultados por linhas
+        return res.rows;
+    }
+    finally{
+        client.release()
+    }
+   
 }
 
 async function inserirPedido(id_usuario, id_livro, preco_unitario, quantidade) {
-    //Criando a conexão com o banco de dados 
     const client = await connect();
+    try{
+        //Criando a conexão com o banco de dados 
+        //AQUI
+        preco_total = preco_unitario * quantidade
 
-    //AQUI
-    preco_total = preco_unitario * quantidade
+        //Argumentando o código SQL
+        await client.query("INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)", [id_usuario, id_livro, preco_total, quantidade]);
 
-    //Argumentando o código SQL
-    await client.query("INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade) values ($1, $2, $3, $4)", [id_usuario, id_livro, preco_total, quantidade]);
-
-    //Atualizar o estoque
-    dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade)
-
+        //Atualizar o estoque
+        dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade)
+    }
+    finally{
+        client.release()
+    }
 }
 
 async function deletarPedido(id) {
-    //Criando a conexão com banco de dados 
     const client = await connect();
-    //Argumentando o código SQL
-    await client.query("DELETE FROM Pedido WHERE id=$1", [id])
+    try{
+         //Criando a conexão com banco de dados 
+        //Argumentando o código SQL
+        await client.query("DELETE FROM Pedido WHERE id=$1", [id])
+    }
+    finally{
+        client.release()
+    }
 }
 
 //exportando as funções desse arquivo para outro arquivo 
