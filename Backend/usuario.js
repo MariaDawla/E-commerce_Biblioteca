@@ -75,20 +75,20 @@ async function fazerLogin(email, senha){
     }
 }
 
-async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) {
+async function inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep) {
     const client = await connect();
 
     try{
         //Criando a conexão com o banco de dados 
         //Argumentando o código SQL
-        await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep]);
+        await client.query("INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep]);
     }
     finally{
         client.release()
     }
 }
 
-async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep) {
+async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, numero, cep) {
     const client = await connect();
     try{
     //Criando a conexão com o banco de dados
@@ -123,7 +123,7 @@ async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, b
     }
 
     if(num_endereco != null){
-        await client.query("UPDATE Usuario SET numero=$1 WHERE id=$2", [num_endereco, id])
+        await client.query("UPDATE Usuario SET numero=$1 WHERE id=$2", [numero, id])
     }
 
     if(cep != null){
