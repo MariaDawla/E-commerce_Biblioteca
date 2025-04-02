@@ -22,6 +22,7 @@ async function connect() {
     //pool.connection: vai estabelecer a conexão entre o programa(a máquina) e o banco de dados
     const client = await pool.connect();
     console.log("Banco de Dados conectado")
+    client.release()
 
     //"global": área global usada para guardar. Nesse caso vai está guardando o objeto connection
     global.connection = pool;
