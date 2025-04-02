@@ -122,7 +122,7 @@ async function modificarUsuario(id, nome, email, senha, telefone, cidade, rua, b
         await client.query("UPDATE Usuario SET bairro=$1 WHERE id=$2", [bairro, id])
     }
 
-    if(num_endereco != null){
+    if(numero != null){
         await client.query("UPDATE Usuario SET numero=$1 WHERE id=$2", [numero, id])
     }
 
