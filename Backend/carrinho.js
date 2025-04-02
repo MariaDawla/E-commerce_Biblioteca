@@ -54,7 +54,7 @@ async function mostrarCarrinhoUsuario(id_usuario){
     try{
         //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        const res = await client.query("SELECT l.id, l.nome, l.autor, l.preco, l.descricao, l.imagem FROM Carrinho JOIN Livro l ON c.id_livro = l id where c.id_usuario=1", [id_usuario]);
+        const res = await client.query("SELECT l.id, l.nome, l.autor, l.preco, l.descricao, l.imagem FROM Carrinho JOIN Livro l ON c.id_livro = l id where c.id_usuario=$1", [id_usuario]);
         //Retornando os resultados por linhas
         return res.rows;
     }
@@ -68,22 +68,28 @@ async function inserirCarrinho(id_usuario, id_livro) {
     const client = await connect();
     try {
         // Verifica se o usuário existe
-        const usuarioExiste = await client.query("SELECT id_usuario FROM Usuarios WHERE id = $1", [id_usuario]);
+        const usuarioExiste = await client.query("SELECT id FROM Usuario WHERE id = $1", [id_usuario]);
         if (usuarioExiste.rowCount === 0) {
             throw new Error("Usuário não encontrado!");
         }
 
         // Verifica se o livro existe
-        const livroExiste = await client.query("SELECT preco_unitario FROM Livro WHERE id = $1", [id_livro]);
+        const livroExiste = await client.query("SELECT preco FROM Livro WHERE id = $1", [id_livro]);
         if (livroExiste.rowCount === 0) {
             throw new Error("Livro não encontrado!");
         }
-        const precoLivro = livroExiste.rows[0].preco_unitario;
+        const precoLivro = livroExiste.rows[0].preco;
 
-        // Inserindo no carrinho, pois ambos existem
+        // Inserindo no carrinho
         await client.query(
-            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario) values ($1, $2, $3)",
+            "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario) VALUES ($1, $2, $3)",
             [id_usuario, id_livro, precoLivro]
+        );
+
+        // Retorna os detalhes do livro adicionado
+        const res = await client.query(
+            "SELECT id, nome, autor, preco, descricao, imagem FROM Livro WHERE id = $1",
+            [id_livro]
         );
         return res.rows;
         
@@ -92,7 +98,7 @@ async function inserirCarrinho(id_usuario, id_livro) {
         return { erro: err.message };
     } 
     finally {
-        client.release()
+        client.release();
     }
 }
 
