@@ -27,12 +27,14 @@ app.get("/", (req, res) =>{
 
 //===============================LIVRO===================================
 //Criando uma rota para utilizar a função mostrarLivros
+//Caminho URL: http://localhost:11915/livro
 app.get("/livro", async (req, res) => {
     const departamentos = await dbLivro.mostrarLivros();
     res.json(departamentos);
 })
 
 //Criando uam rota para retornar livros com bases nos flitros
+//Caminho URL: http://localhost:11915/livros
 app.get("/livros", async(req, res) => {
     const { nome, titulo_original, genero, idioma, autor, editora } = req.query;
     const livrosFiltrados = await dbLivro.mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora);
@@ -41,12 +43,14 @@ app.get("/livros", async(req, res) => {
 })
 
 //Criando uma rota para retornar os generos existentes
+// Caminho URL: http://localhost:11915/generos
 app.get("/generos", async(req, res) => {
     const generos = await dbLivro.mostrarGeneros();
     res.json(generos);
 })
 
 //Criando uma rota para retornar os idiomas existentes
+//Caminho URL: http://localhost:11915/idiomas
 app.get("/idiomas", async(req, res) => {
     const idiomas = await dbLivro.mostrarIdiomas();
     res.json(idiomas);
@@ -54,6 +58,7 @@ app.get("/idiomas", async(req, res) => {
 
 //Criando uma rota para utilizar a função mostrarLivro
 // "/:id" usado como parematro.
+//Caminho URL: http://localhost:11915/livro:id
 app.get("/livro/:id", async (req, res) => {
     
     const id = req.params.id; 
