@@ -54,14 +54,13 @@ async function mostrarCarrinhoUsuario(id_usuario){
     try{
         //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM Carrinho WHERE id_usuario=$1", [id_usuario]);
+        const res = await client.query("SELECT l.id, l.nome, l.autor, l.preco, l.descricao, l.imagem FROM Carrinho JOIN Livro l ON c.id_livro = l id where c.id_usuario=1", [id_usuario]);
         //Retornando os resultados por linhas
         return res.rows;
     }
     finally{
         client.release()
     }
-    
 }
 
 
