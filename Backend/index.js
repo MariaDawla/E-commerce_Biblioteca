@@ -163,20 +163,20 @@ app.get("/usuario/:id", async (req, res) => {
 })
 
 //Rota para função inserirUsuario
-//Caminho URL: http://localhost:11915/usuarioADD?nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+//Caminho URL: http://localhost:11915/usuarioADD?nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&numero=x&cep=x
 app.use(express.json());
 app.post("/usuarioADD/", async (req, res) => {
 
-    const { nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep } = req.body; // Pegando os parâmetros da URL
+    const { nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep } = req.body; // Pegando os parâmetros da URL
 
-    if(num_endereco != parseInt(num_endereco)){
+    if(numero != parseInt(numero)){
 
-        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'num_endereco'. Escreva um número inteiro para da certo!"})
+        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero'. Escreva um número inteiro para da certo!"})
 
     } else {
 
         //Executando o método inserirUsuario
-        await dbUsuario.inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, num_endereco, cep);
+        await dbUsuario.inserirUsuario(nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep);
 
         //Resposta para o usuário
         res.json({ mensagem: "Usuario inserido com sucesso!" }); 
@@ -184,21 +184,21 @@ app.post("/usuarioADD/", async (req, res) => {
 })
 
 //Rota para função modificarUsuario
-//Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+//Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&numero=x&cep=x
 app.use(express.json());
 app.put("/usuarioUPT/", async (req, res) => {
 
     //Pegando os parâmetros da URL
-    const {id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep} = req.body; 
+    const {id, nome, email, senha, telefone, cidade, rua, bairro, numero, cep} = req.body; 
 
     if(id != parseInt(id)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id'. Escreva um número inteiro para da certo!"})
-    } else if (num_endereco != parseInt(num_endereco)){
-        if(num_endereco != null){
-            res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'num_endereco'. Escreva um número inteiro para da certo!"})
+    } else if (numero != parseInt(numero)){
+        if(numero != null){
+            res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero'. Escreva um número inteiro para da certo!"})
         }
     } else {
-        await dbUsuario.modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, num_endereco, cep);
+        await dbUsuario.modificarUsuario(id, nome, email, senha, telefone, cidade, rua, bairro, numero, cep);
         res.json({mensagem: "Usuario atualizado com sucesso!"});
     }
     
@@ -268,7 +268,7 @@ app.post("/estoqueADD/", async (req, res) => {
 })
 
 //Rota para função modificar_Quantidade_do_Livro_no_Estoque
-//Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&num_endereco=x&cep=x
+//Caminho URL: http://localhost:11915/usuarioUPT?id=x&nome=x&email=x&senha=x&cpf=x&telefone=x&cidade=x&rua=x&bairro=x&numero=x&cep=x
 app.use(express.json());
 app.put("/estoqueUPT/", async (req, res) => {
 
