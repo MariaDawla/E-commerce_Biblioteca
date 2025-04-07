@@ -42,6 +42,12 @@ app.get("/livros", async(req, res) => {
 
 })
 
+app.get("/livrosVendedor/:id_vendedor", async(req, res) => {
+    const id_vendedor = req.params.id_vendedor;
+    const livroVendedores = await dbLivro.mostrarLivrosVendedor(id_vendedor)
+    res.json(livroVendedores);
+})
+
 //Criando uma rota para retornar os generos existentes
 // Caminho URL: http://localhost:11915/generos
 app.get("/generos", async(req, res) => {
@@ -79,7 +85,7 @@ app.get("/livro/:id", async (req, res) => {
 //Caminha URL: http://localhost:11915/livroADD?nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
 app.use(express.json());
 app.post("/livroADD/", async (req, res) => {
-    const { nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem } = req.body; // Pegando os parâmetros da URL
+    const { nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor} = req.body; // Pegando os parâmetros da URL
 
     if(preco != parseFloat(preco)){
         res.json({mensagem: "Você digitou alguma letra no campo 'preco', digita apenas números"})
@@ -87,8 +93,10 @@ app.post("/livroADD/", async (req, res) => {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero_paginas'. Escreva apenas números inteiros para da certo!"})
     } else if (isbn != parseInt(isbn)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
-    } else {
-        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, isbn, descricao, data_publicacao, imagem);//Executando o método inserirLivro
+    } 
+    else {
+        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
+    
     res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
     }
 })
