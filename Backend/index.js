@@ -36,8 +36,8 @@ app.get("/livro", async (req, res) => {
 //Criando uam rota para retornar livros com bases nos flitros
 //Caminho URL: http://localhost:11915/livros
 app.get("/livros", async(req, res) => {
-    const { nome, titulo_original, genero, idioma, autor, editora } = req.query;
-    const livrosFiltrados = await dbLivro.mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora);
+    const { nome, titulo_original, genero, idioma, autor, editora, id_vendedor } = req.query;
+    const livrosFiltrados = await dbLivro.mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora, id_vendedor);
     res.json(livrosFiltrados);
 
 })
