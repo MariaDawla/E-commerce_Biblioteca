@@ -81,11 +81,6 @@ async function inserirCarrinho(id_usuario, id_livro) {
         }
         const precoLivro = livroExiste.rows[0].preco;
 
-        const livroExisteNoCarrinho = await client.query("SELECT c.id FROM Carrinho c JOIN Livro l ON c.id_livro = l.id where c.id_usuario=$1 and id_livro=$2", [id_usuario, id_livro])
-        if (livroExisteNoCarrinho != null){
-            throw new Error("O livro já existe no carrinho!")
-        }
-
         // Inserindo no carrinho
         await client.query(
             "INSERT INTO Carrinho (id_usuario, id_livro, preco_unitario) VALUES ($1, $2, $3)",
