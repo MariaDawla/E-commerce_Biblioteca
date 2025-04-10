@@ -95,9 +95,10 @@ app.post("/livroADD/", async (req, res) => {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
     } 
     else {
-        await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
-    
-    res.json({ mensagem: "Livro inserido com sucesso!" }); //Resposta para o usuário
+        const livroInserido = await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
+        await dbEstoque.inserirLivroNoEstoque(livroInserido.id, quantidade)
+        res.json({ mensagem: "Livro inserido com sucesso!" });
+     //Resposta para o usuário
     }
 })
 
@@ -333,7 +334,7 @@ app.get("/pedido/:id", async (req, res) => {
     if (parseInt(id) != id) {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, escreva um número inteiro para da certo!"})
     } else {
-        const estoque = await dbPedido.mostrarPedido(id);
+        const estoque = await dbPedido.mostrarPedidoUsuario(id);
         res.json(estoque);
 
     }

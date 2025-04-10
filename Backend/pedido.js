@@ -50,12 +50,12 @@ async function mostrarPedidos(){
     
 }
 
-async function mostrarPedido(id){
+async function mostrarPedidoUsuario(id_usuario){
     const client = await connect();
     try{
          //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        const res = await client.query("SELECT p.id_usuario, l.id, l.nome, l.autor, l.preco, l.descricao, l.imagem, p.data_pedido FROM Pedido p JOIN Livro l ON p.id_livro = l.id where p.id_usuario=$1", [id]);
+        const res = await client.query("SELECT p.id_usuario, l.id, l.nome, l.autor, l.preco, l.descricao, l.imagem, p.data_pedido FROM Pedido p JOIN Livro l ON p.id_livro = l.id where p.id_usuario=$1", [id_usuario]);
         //Retornando os resultados por linhas
         return res.rows;
     }
@@ -97,7 +97,7 @@ async function deletarPedido(id) {
 //exportando as funções desse arquivo para outro arquivo 
 module.exports = {
     mostrarPedidos,
-    mostrarPedido,
+    mostrarPedidoUsuario,
     inserirPedido,
     deletarPedido
 }
