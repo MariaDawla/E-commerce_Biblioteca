@@ -103,10 +103,10 @@ app.post("/livroADD/", async (req, res) => {
 })
 
 //Rota para função modificarPrecoLivro
-//Caminho URL: http://localhost:11915/livroUPT?id=x&preco=x
+//Caminho URL: http://localhost:11915/livroUPT?id=x&nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
 app.use(express.json());
 app.put("/livroUPT/", async (req, res) => {
-    const {id, preco} = req.body; //Pegando os parâmetros da URL
+    const {id, nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedo} = req.body; //Pegando os parâmetros da URL
 
     console.log("id da URL: "+id)
     console.log("preço da URL: "+preco)
@@ -117,7 +117,7 @@ app.put("/livroUPT/", async (req, res) => {
     console.log("id convertido: "+idInt)
     console.log("preço convertido: "+precoFloat)
 
-    if(id != idInt){
+    if(id != parseIntidInt){
         res.json({mensagem: "Você escreveu uma alguma letra no 'id'. Tem que ser um número"})
     } else if (preco != precoFloat){
         res.json({mensagem: "Você escreveu uma alguma letra no 'preco'. Tem que ser um número"})
