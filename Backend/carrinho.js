@@ -104,12 +104,12 @@ async function inserirCarrinho(id_usuario, id_livro) {
 }
 
 
-async function deletarLivroCarrinho(id_carrinho) {
+async function deletarLivroCarrinho(id) {
     const client = await connect();
     try{
         //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        await client.query("DELETE FROM Carrinho WHERE id=$1", [id_carrinho])
+        await client.query("DELETE FROM Carrinho WHERE id=$1", [id])
     }
     finally{
         client.release()

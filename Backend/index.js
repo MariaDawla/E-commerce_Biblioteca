@@ -641,21 +641,19 @@ app.post("/novoCarrinho", async (req, res) => {
 //Deletar um item do carrinho de um determinado usuário
 app.get("/deletarCarrinho/:id", async (req, res) => {
 
-    const {id_carrinho} = req.query; //Pegando os parâmetros da URL
+    const id = req.params.id; //Pegando os parâmetros da URL
 
-    console.log("Id do usuário: " + id_carrinho)
-    const idCarrinhoInt = parseInt(id_carrinho);
+    console.log("Id do carrinho: " + id)
+    const idCarrinhoInt = parseInt(id);
     
-    if(id_carrinho != idCarrinhoInt){
+    if(id != idCarrinhoInt){
         res.json({mensagem: "Parâmetros Inválidos!"})
     }
     else {
-        await dbCarrinho.deletarLivroCarrinho(id_carrinho);
+        await dbCarrinho.deletarLivroCarrinho(id);
         res.json({mensagem: "Livro deletado com sucesso do carinho"});    
     }
 })
-
-
 
 
 
