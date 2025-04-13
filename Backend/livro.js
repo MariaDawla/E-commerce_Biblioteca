@@ -1,4 +1,6 @@
-//Função para conectar ao banco de dados
+
+const dbEstoque = require("./estoque") //importa as funções do arquivo estoque.js
+//Função para conectar ao banco de dado
 async function connect() {
    
 
@@ -117,7 +119,10 @@ async function inserirLivro(nome, titulo_original, genero, idioma, autor, editor
         //Criando a conexão com o banco de dados 
         //Argumentando o código SQL
         const res = await client.query("INSERT INTO Livro (nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)", [nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor]);
-        return res.rows;
+
+        const id_livro = res.rows[0].id;
+        await dbEstoque.inserirLivroNoEstoque(id_livro, quantidade)
+        return res.rows;   
     }
     finally{
         client.release()

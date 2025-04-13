@@ -92,12 +92,12 @@ app.post("/livroADD/", async (req, res) => {
     } 
     else if (numero_paginas != parseInt(numero_paginas)) {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero_paginas'. Escreva apenas números inteiros para da certo!"})
-    } else if (isbn != parseInt(isbn)){
+    } 
+    else if (isbn != parseInt(isbn)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
     } 
     else {
-        const livroInserido = await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
-        await dbEstoque.inserirLivroNoEstoque(livroInserido.id, quantidade)
+        const livroInserido = await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor); //Executando o método inserirLivro
         res.json(livroInserido);
     }
 })
