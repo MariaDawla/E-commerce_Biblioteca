@@ -52,7 +52,7 @@ app.get("/livrosVendedor/:id_vendedor", async(req, res) => {
 // Caminho URL: http://localhost:11915/generos
 app.get("/generos", async(req, res) => {
     const generos = await dbLivro.mostrarGeneros();
-    es.status(200).json(generos);
+    res.status(200).json(generos);
 })
 
 //Criando uma rota para retornar os idiomas existentes
