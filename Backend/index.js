@@ -89,7 +89,8 @@ app.post("/livroADD/", async (req, res) => {
 
     if(preco != parseFloat(preco)){
         res.json({mensagem: "Você digitou alguma letra no campo 'preco', digita apenas números"})
-    } else if (numero_paginas != parseInt(numero_paginas)) {
+    } 
+    else if (numero_paginas != parseInt(numero_paginas)) {
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'numero_paginas'. Escreva apenas números inteiros para da certo!"})
     } else if (isbn != parseInt(isbn)){
         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'ISBN'. screva apenas números inteiros para da certo!"})
@@ -98,8 +99,6 @@ app.post("/livroADD/", async (req, res) => {
         const livroInserido = await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
         await dbEstoque.inserirLivroNoEstoque(livroInserido.id, quantidade)
         res.json(livroInserido);
-        
-     //Resposta para o usuário
     }
 })
 
@@ -107,7 +106,7 @@ app.post("/livroADD/", async (req, res) => {
 //Caminho URL: http://localhost:11915/livroUPT?id=x&nome=x&titulo_original=x&genero=x&idioma=x&autor=x&iditora=x&preco=x&numero_paginas=x&isbn=x&data_publicacao=x&imagem=x
 app.use(express.json());
 app.put("/livroUPT/", async (req, res) => {
-    const {id, nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedo} = req.body; //Pegando os parâmetros da URL
+    const {id, nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem} = req.body; //Pegando os parâmetros da URL
 
     console.log("id da URL: "+id)
     console.log("preço da URL: "+preco)
@@ -115,16 +114,18 @@ app.put("/livroUPT/", async (req, res) => {
     const idInt = parseInt(id);
     const precoFloat = parseFloat(preco);
 
-    console.log("id convertido: "+idInt)
-    console.log("preço convertido: "+precoFloat)
+    console.log("id convertido: "+ idInt)
+    console.log("preço convertido: "+ precoFloat)
 
-    if(id != parseIntidInt){
+    if(id != idInt){
         res.json({mensagem: "Você escreveu uma alguma letra no 'id'. Tem que ser um número"})
-    } else if (preco != precoFloat){
+    } 
+    else if (preco != precoFloat){
         res.json({mensagem: "Você escreveu uma alguma letra no 'preco'. Tem que ser um número"})
-    } else {
-        await dbLivro.modificarPrecoLivro(idInt, precoFloat);
-        res.json({mensagem: "Livro atualizado com sucesso!"});
+    } 
+    else {
+        const livroAtulizado = await dbLivro.modificarLivro(id, nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem);
+        res.json(livroAtulizado);
     }
     
 })
