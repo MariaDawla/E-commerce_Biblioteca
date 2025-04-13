@@ -56,7 +56,7 @@ async function mostrarLivrosFiltros(nome, idioma, genero, autor, editora, id_ven
     try{
          //Criação a conexão com o banco de dados
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM livro WHERE titulo_original = (SELECT titulo_original FROM livro WHERE nome ILIKE '%' || $1 || '%'LIMIT 1) AND ($2 IS NULL OR idioma ILIKE '%' || $2 || '%') AND ($3 IS NULL OR genero ILIKE '%' || $3 || '%') AND ($4 IS NULL OR autor ILIKE '%' || $4 || '%') AND ($5 IS NULL OR editora ILIKE '%' || $5 || '%') AND ($6::INTEGER IS NULL OR id_vendedor = $6);", [nome, idioma, genero, autor, editora, id_vendedor])
+        const res = await client.query("SELECT * FROM livro WHERE ($1::TEXT IS NULL OR $1 = '' OR titulo_original = (SELECT titulo_original FROM livro WHERE nome ILIKE '%' || $1 || '%'LIMIT 1)) AND ($2::TEXT IS NULL OR idioma ILIKE '%' || $2 || '%') AND ($3::TEXT IS NULL OR genero ILIKE '%' || $3 || '%')AND ($4::TEXT IS NULL OR autor ILIKE '%' || $4 || '%') AND ($5::TEXT IS NULL OR editora ILIKE '%' || $5 || '%') AND ($6::INTEGER IS NULL OR id_vendedor = $6);", [nome, idioma, genero, autor, editora, id_vendedor])
         return res.rows;
     }
     finally{
