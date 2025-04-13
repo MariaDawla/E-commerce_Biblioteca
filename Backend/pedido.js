@@ -64,21 +64,41 @@ async function mostrarPedidoUsuario(id_usuario){
     }
 }
 
-async function inserirPedido(id_usuario, id_livro, preco_unitario, quantidade) {
+// async function inserirPedido(id_usuario, id_livro, preco_unitario, quantidade) {
+//     const client = await connect();
+//     try{
+//         //Criando a conexão com o banco de dados 
+//         //AQUI
+//         preco_total = preco_unitario * quantidade
+
+//         //Argumentando o código SQL
+//         await client.query("INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade, data_pedido) values ($1, $2, $3, $4, CURRENT_DATE)", [id_usuario, id_livro, preco_total, quantidade]);
+
+//         //Atualizar o estoque
+//         dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade)
+//     }
+//     finally{
+//         client.release()
+//     }
+// }
+
+async function inserirPedido(id_usuario, itens) {
     const client = await connect();
-    try{
-        //Criando a conexão com o banco de dados 
-        //AQUI
-        preco_total = preco_unitario * quantidade
+    try {
+        for (const item of itens) {
+            const { id_livro, preco_unitario, quantidade } = item;
+            const preco_total = preco_unitario * quantidade;
 
-        //Argumentando o código SQL
-        await client.query("INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade, data_pedido) values ($1, $2, $3, $4, CURRENT_DATE)", [id_usuario, id_livro, preco_total, quantidade]);
+            await client.query(
+                "INSERT INTO pedido (id_usuario, id_livro, preco_unitario, quantidade, data_pedido) values ($1, $2, $3, $4, CURRENT_DATE)",
+                [id_usuario, id_livro, preco_total, quantidade]
+            );
 
-        //Atualizar o estoque
-        dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade)
-    }
-    finally{
-        client.release()
+            // Atualiza o estoque
+            await dbEstoque.modificar_Quantidade_do_Livro_no_Estoque(id_livro, quantidade);
+        }
+    } finally {
+        client.release();
     }
 }
 

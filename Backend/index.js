@@ -345,34 +345,49 @@ app.get("/pedido/:id", async (req, res) => {
 
 //Rota para função inserirPedido
 //Caminho URL: http://localhost:11915/pedidoADD?id_usuario=x&id_livro=x&quantidade=x
+// app.use(express.json());
+// app.post("/pedidoADD/", async (req, res) => {
+
+//     const {id_usuario, id_livro, quantidade} = req.body; // Pegando os parâmetros da URL
+
+//     //Condições
+//     if (id_usuario != parseInt(id_usuario)){
+
+//         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_usuario'. Escreva um número inteiro para da certo!"})
+
+//     } else if(id_livro != parseInt(id_livro)){
+
+//         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
+
+//     }  else if (quantidade != parseInt(quantidade)){
+
+//         res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
+
+//     } else {
+//         const preco_unitario = await query("SELECT preco_unitario FROM Livro WHERE id=$1", [id_livro])
+
+//         //Executando o método inserirPedido
+//         await dbPedido.inserirPedido(id_usuario, id_livro, preco_unitario, quantidade);
+
+//         //Resposta para o usuário
+//         res.json({ mensagem: "Pedido inserido com sucesso!" }); 
+//     }
+// })
+
 app.use(express.json());
 app.post("/pedidoADD/", async (req, res) => {
+    const { id_usuario, itens } = req.body;
 
-    const {id_usuario, id_livro, quantidade} = req.body; // Pegando os parâmetros da URL
-
-    //Condições
-    if (id_usuario != parseInt(id_usuario)){
-
-        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_usuario'. Escreva um número inteiro para da certo!"})
-
-    } else if(id_livro != parseInt(id_livro)){
-
-        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'id_livro'. Escreva um número inteiro para da certo!"})
-
-    }  else if (quantidade != parseInt(quantidade)){
-
-        res.json({mensagem: "Você escreveu algo diferente de um número inteiro, no campo 'quantidade'. Escreva um número inteiro para da certo!"})
-
-    } else {
-        const preco_unitario = await query("SELECT preco_unitario FROM Livro WHERE id=$1", [id_livro])
-
-        //Executando o método inserirPedido
-        await dbPedido.inserirPedido(id_usuario, id_livro, preco_unitario, quantidade);
-
-        //Resposta para o usuário
-        res.json({ mensagem: "Pedido inserido com sucesso!" }); 
+    // Verifica se veio um array válido
+    if (!Array.isArray(itens) || itens.length === 0) {
+        res.json({ mensagem: "A lista de itens está vazia ou inválida." });
     }
-})
+    else{
+        await dbPedido.inserirPedido(id_usuario, itens);
+        res.json({ mensagem: "Pedido realizado com sucesso!" });
+    }
+  
+});
 
 //Rota para função deletarPedido
 //Caminho URL: http://localhost:11915/pedidoDEL/id
