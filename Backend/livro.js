@@ -124,10 +124,46 @@ async function inserirLivro(nome, titulo_original, genero, idioma, autor, editor
     }
 }
 
-async function modificarPrecoLivro(id, preco) {
+async function modificarPrecoLivro(id, nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem) {
     const client = await connect();
     try{
         //Criando a conexão com o banco de dados
+        if(nome != null){
+            await client.query("UPDATE Livro SET nome=$1 WHERE id=$2", [nome, id])
+        }
+        if(titulo_original != null){
+            await client.query("UPDATE Livro SET titulo_original=$1 WHERE id=$2", [titulo_original, id])
+        }
+        if(genero != null){
+            await client.query("UPDATE Livro SET genero=$1 WHERE id=$2", [genero, id])
+        }
+        if(idioma != null){
+            await client.query("UPDATE Livro SET idioma=$1 WHERE id=$2", [idioma, id])
+        }
+        if(autor != null){
+            await client.query("UPDATE Livro SET autor=$1 WHERE id=$2", [autor, id])
+        }
+        if(editora != null){
+            await client.query("UPDATE Livro SET editora=$1 WHERE id=$2", [editora, id])
+        }
+        if(numero_paginas != null){
+            await client.query("UPDATE Livro SET numero_paginas=$1 WHERE id=$2", [numero_paginas, id])
+        }
+        if(quantidade != null){
+            await client.query("UPDATE Livro SET quantidade=$1 WHERE id=$2", [quantidade, id])
+        }
+        if(isbn != null){
+            await client.query("UPDATE Livro SET isbn=$1 WHERE id=$2", [isbn, id])
+        }
+        if(descricao != null){
+            await client.query("UPDATE Livro SET descricao=$1 WHERE id=$2", [descricao, id])
+        }
+        if(data_publicacao != null){
+            await client.query("UPDATE Livro SET data_publicacao=$1 WHERE id=$2", [data_publicacao, id])
+        }
+        if(imagem != null){
+            await client.query("UPDATE Livro SET imagem=$1 WHERE id=$2", [imagem, id])
+        }
         //Argumentando o código SQL
         await client.query("UPDATE Livro SET preco=$1 WHERE id=$2", [preco, id])
     }
