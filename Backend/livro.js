@@ -54,7 +54,7 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
     try{
          //Criação a conexão com o banco de dados
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM livro WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL) AND (id_vendedor = $7 OR $7 IS NULL);", [nome, titulo_original, genero, idioma, autor, editora, id_vendedor])
+        const res = await client.query("SELECT * FROM livro WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL) AND ($7 IS NULL OR id_vendedor = $7);", [nome, titulo_original, genero, idioma, autor, editora, id_vendedor])
         return res.rows;
     }
     finally{
@@ -65,7 +65,7 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
 async function mostrarLivrosVendedor(id_vendedor) {
     const client = await connect();
     try{
-        const res = await client.query("SELECT * FROM Livro WHERE id_vendedor=$1", [id_vendedor]);
+        const res = await client.query("SELECT livro.nome, livro.id_vendedor, estoque.quantidade FROM estoque JOIN livro ON livro.id = estoque.id_livro", [id_vendedor]);
         return res.rows;
     }
     finally{
