@@ -51,12 +51,12 @@ async function mostrarLivros(){
     }
 }
 
-async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor, editora, id_vendedor){
+async function mostrarLivrosFiltros(nome, idioma, genero, autor, editora, id_vendedor){
     const client = await connect();
     try{
          //Criação a conexão com o banco de dados
         //Argumentando o código SQL
-        const res = await client.query("SELECT * FROM livro WHERE (nome ILIKE '%' || $1 || '%' OR $1 IS NULL) AND (titulo_original ILIKE '%' || $2 || '%' OR $2 IS NULL) AND (genero ILIKE '%' || $3 || '%' OR $3 IS NULL) AND (idioma ILIKE '%' || $4 || '%' OR $4 IS NULL) AND (autor ILIKE '%' || $5 || '%' OR $5 IS NULL) AND (editora ILIKE '%' || $6 || '%' OR $6 IS NULL) AND ($7::INTEGER IS NULL OR id_vendedor = $7);", [nome, titulo_original, genero, idioma, autor, editora, id_vendedor])
+        const res = await client.query("SELECT * FROM livro WHERE titulo_original = (SELECT titulo_original FROM livro WHERE nome ILIKE '%' || $1 || '%'LIMIT 1) AND ($2 IS NULL OR idioma ILIKE '%' || $2 || '%') AND ($3 IS NULL OR genero ILIKE '%' || $3 || '%') AND ($4 IS NULL OR autor ILIKE '%' || $4 || '%') AND ($5 IS NULL OR editora ILIKE '%' || $5 || '%') AND ($6::INTEGER IS NULL OR id_vendedor = $6);", [nome, idioma, genero, autor, editora, id_vendedor])
         return res.rows;
     }
     finally{
