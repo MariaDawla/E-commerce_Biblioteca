@@ -97,7 +97,8 @@ app.post("/livroADD/", async (req, res) => {
     else {
         const livroInserido = await dbLivro.inserirLivro(nome, titulo_original, genero, idioma, autor, editora, preco, numero_paginas, quantidade, isbn, descricao, data_publicacao, imagem, id_vendedor);//Executando o método inserirLivro
         await dbEstoque.inserirLivroNoEstoque(livroInserido.id, quantidade)
-        res.json({ mensagem: "Livro inserido com sucesso!" });
+        res.json(livroInserido);
+        
      //Resposta para o usuário
     }
 })

@@ -71,7 +71,7 @@ async function inserirLivroNoEstoque(id_livro, quantidade) {
     try{
          //Criando a conexão com o banco de dados 
         //Argumentando o código SQL
-        await client.query("INSERT INTO estoque (id_livro, quantidade, id_livro) values ($1, $2, $3)", [id_livro, quantidade, id_livro]);
+        await client.query("INSERT INTO estoque (id_livro, quantidade) values ($1, $2)", [id_livro, quantidade]);
     }
     finally{
         client.release()
