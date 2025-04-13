@@ -55,7 +55,7 @@ async function mostrarCarrinhoUsuario(id_usuario){
     try{
         //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        const res = await client.query("SELECT l.id, l.nome, l.autor, l.preco, e.quantidade, l.descricao, l.imagem FROM Carrinho c JOIN Livro l ON c.id_livro = l.id JOIN Estoque e ON e.id_livro = l.id where c.id_usuario=$1", [id_usuario]);
+        const res = await client.query("SELECT c.id as id_carrinho, l.id as id_livro, l.nome, l.autor, l.preco, e.quantidade, l.descricao, l.imagem FROM Carrinho c JOIN Livro l ON c.id_livro = l.id JOIN Estoque e ON e.id_livro = l.id where c.id_usuario=$1", [id_usuario]);
         //Retornando os resultados por linhas
         return res.rows;
     }
@@ -104,12 +104,12 @@ async function inserirCarrinho(id_usuario, id_livro) {
 }
 
 
-async function deletarLivroCarrinho(id_usuario, id_livro) {
+async function deletarLivroCarrinho(id_carrinho) {
     const client = await connect();
     try{
         //Criando a conexão com banco de dados 
         //Argumentando o código SQL
-        await client.query("DELETE FROM Carrinho WHERE id_usuario=$1 AND id_livro=$2", [id_usuario, id_livro])
+        await client.query("DELETE FROM Carrinho WHERE id=$1", [id_carrinho])
     }
     finally{
         client.release()
