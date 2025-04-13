@@ -65,7 +65,7 @@ async function mostrarLivrosFiltros(nome, titulo_original, genero, idioma, autor
 async function mostrarLivrosVendedor(id_vendedor) {
     const client = await connect();
     try{
-        const res = await client.query("SELECT livro.nome, livro.id_vendedor, estoque.quantidade FROM estoque JOIN livro ON livro.id = estoque.id_livro WHERE livro.id_vendedor=$1", [id_vendedor]);
+        const res = await client.query("SELECT livro.id, livro.nome, livro.titulo_original, livro.genero, livro.idioma, livro.autor, livro.editora, livro.preco, livro.numero_paginas, livro.isbn, livro.descricao, livro.data_publicacao, livro.imagem, livro.id_vendedor, estoque.quantidade FROM estoque JOIN livro ON livro.id = estoque.id_livro WHERE livro.id_vendedor = $1;", [id_vendedor]);
         return res.rows;
     }
     finally{
