@@ -10,6 +10,22 @@ Os dois arquivos comentados são: o "package-lock.json" e o "package.json". Eles
  
 ## .env
 O .env foi o primeiro arquivo criado no Backend. Esse arquivo é utilizado para armazenar as informações: user, host, database, password e port, que são necessárias para conectar com o banco de dados.
+
+Veja abaixo, um exemplo do arquivo .env
+
+```javascript
+user = avnadmin
+
+host = pg-a7d88d0-germinare-a6c4.d.aivencloud.com
+
+database = dbBiblioteca
+
+password = AVNS_gBVTrL6D4nMLZpl7UYm
+
+port = 11915
+ 
+````
+
  
     
 ## .index.js
