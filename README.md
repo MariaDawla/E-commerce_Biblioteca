@@ -4,12 +4,12 @@
  
 O Backend foi desenvolvido 100% pela linguagem de programação Java Script. 
  
-O Backend é divido por 13 arquivos, 2 arquivos sendo a linha de configuração do projeto node.js, e os outros 11 sendo usados para execução direta do projeto.
+O Backend é divido em 13 arquivos, 2 arquivos sendo a linha de configuração do projeto node.js, e os outros 11 sendo utilizados para execução direta do projeto.
  
-Os dois arquivos comentados são: o "package-lock.json" e o "package.json". Eles contém as dependencias que a aplicação utiliza. Os outros 11 são: ".env", "carrinho.js", "carrinho_livro.js", "estoque.js", "index.js", "livro.js", "livro_pedido.js", "pedido.js", "usuario.js" e o "usuario_pedido.js".
+Os dois arquivos comentados são: o "package-lock.json" e o "package.json". Eles contém as dependências que a aplicação utiliza. Os outros 11 são: ".env", "carrinho.js", "carrinho_livro.js", "estoque.js", "index.js", "livro.js", "livro_pedido.js", "pedido.js", "usuario.js" e o "usuario_pedido.js".
  
 ## .env
-O .env foi o primeiro arquivo criado no Backend. Esse arquivo é usado para armazenar as informações: user, host, database, password e port, que são necessarias para conectar com o banco de dados.
+O .env foi o primeiro arquivo criado no Backend. Esse arquivo é utilizado para armazenar as informações: user, host, database, password e port, que são necessárias para conectar com o banco de dados.
  
     
 ## .index.js
@@ -17,7 +17,7 @@ O .env foi o primeiro arquivo criado no Backend. Esse arquivo é usado para arma
 O index.js foi o segundo arquivo criado. Esse arquivo tem a função principal de interagir diretamente com o frontend, disponibilizando as funções dos outros arquivos.
  
 ### Primeiros códigos
-Antes de qualquer coisa foi feito 2 coisas para fazer o backend funcionar. A primeira foi iniciar a biblioteca dotenv (uma biblioteca para gestão de variavel de ambiente) para ter acesso as informações do .env e já pegar a informação "port" para criar as rotas. A segunda foi iniciar a biblioteca express (Biblioteca para cirar backend) e criar uma aplicação nodejs com uma variável chamada "app". Abaixo está como foi feito as duas etapas:
+Inicialmente, foi realizado 2 procedimentos para fazer o Backend funcionar. O primeiro, foi iniciar a biblioteca dotenv (uma biblioteca para gestão de variavel de ambiente) para ter acesso as informações do .env e pegar a variável de ambiente "port", para assim criar as rotas. O segundo, foi iniciar a biblioteca express (Biblioteca para cirar backend) e criar uma aplicação nodejs com uma variável chamada "app". Abaixo está como foi feito as duas etapas:
  
 ```javascript
 require("dotenv").config(); //iniciando a biblioteca dotenv
@@ -31,7 +31,7 @@ const app = express(); //Criando a aplicação
 ````
  
 ### Cors
-No meio do processo vimos que precisavamos fazer um cors para conectar sem erro no Frontend. Primeiro nós importamos o módulo cors no meu arquivo Node.js e depois permiti que qualquer origem acesse os recursos da minha aplicação. Veja abaixo como foi feito: 
+No meio do processo, vimos que precisavamos fazer um cors para conectar o Backend sem falhas com o Frontend. Primeiro, nós importamos o módulo cors no arquivo Node.js e depois permitimos que qualquer origem acesse os recursos da aplicação. Veja abaixo como foi feito: 
  
 ```javascript
 const cors = require('cors')
@@ -41,7 +41,7 @@ app.use(cors());
 ````
  
 ### Rotas
-Agora que tudo foi configurado, vamos para rotas. As rotas é o caminho que o frontend vai usar para utilizar as funções CRUD. 
+Agora que tudo foi configurado, vamos para rotas. As rotas são os caminhos que o Frontend irá utilizar para as funções CRUD. 
  
 As rotas sempre vão ter a entrada que as informações vão ser todas passadas em uma URL. Dois parâmetros, para o request e o response. Uma linha de código que vai pegar as informações que estão no request e passar em ordem para cada variavel, pois todas as informações colocadas na URL vai para o request. Vão ter condições, para verificar se o dado foi colocado na entrada corretamente. E retornar uma mensagem em formato json. Veja o exemplo, de uma das rotas, abaixo para entender como foi feito:
  
@@ -69,19 +69,19 @@ app.post("/usuarioADD/", async (req, res) => {
  
 ````
  
-Existem rotas de todoas as funções crud de todos outros 9 arquivos, que vão ser apresnetados no próximo tópico.
+Todos os 9 arquivos, possuem rotas com as funções CRUD, que irão ser apresentadas no próximo tópico.
  
 ## Arquivos databases
  
-Os 9 arquivos que sobraram, "carrinho.js", "carrinho_livro.js", "estoque.js", "livro.js", "livro_pedido.js", "pedido.js", "usuario.js" e o "usuario_pedido.js", são nomeados de acordo com o nome das tabelas do banco de dados, ou seja, se quiser mexer na tabela usuario, eu tenho que utilizar as funções que estão no "usuario.js"
+Os 9 arquivos que sobraram, "carrinho.js", "carrinho_livro.js", "estoque.js", "livro.js", "livro_pedido.js", "pedido.js", "usuario.js" e o "usuario_pedido.js", são nomeados de acordo com os nomes das tabelas do banco de dados, ou seja, se quiser mexer na tabela Usuario, temos que utilizar as funções que estão no "usuario.js"
  
-Todos eles contém 4 funções, cada uma representando as quatro operações básicas do desenvolvimento de uma aplicação, o CRUD, uma função para conectar com o banco de dados e mais algumas funções que foram necessárias para a aplicação.
+Todos eles contém 4 funções, cada uma representando as quatro operações básicas do desenvolvimento de uma aplicação, o CRUD, uma função para conectar com o banco de dados e mais algumas que foram necessárias durante a aplicação.
  
 ### Função connect()
  
-A função connect, como o nome já diz, é a função que vai conectar o backend com o banco de dados
+A função connect, como o nome já diz, é a função que vai estabelecer a conexão do Backend com o banco de dados.
  
-Primeiro de tudo, eu iniciei uma connection pool. A connection pool, uma estratégia de conexão que abre algumas conexões com o banco de dados e usar apenas o necessário. Para isso eu usei uma linha código que vai pegar apenas a classe pool da biblioteca pg. Após isso eu passei as informações do banco de dados (que estava no arquivo .env) e estabeleci a conexão. Vejo no código abaixo como foi feito: 
+Primeiro de tudo, iniciamos uma connection pool. A connection pool, é uma estratégia de conexão que abre algumas conexões com o banco de dados e usa apenas o necessário. Para isso, usamos uma linha código que irá pegar apenas a classe pool da biblioteca pg. Após isso, passamos as informações do banco de dados (que estavam no arquivo .env) e estabelecemos a conexão. Vejo no código abaixo como foi realizado: 
  
 ```javascript
  
@@ -122,10 +122,10 @@ async function connect() {
  
 ````
  
-Obs: A ultima condição, que retorna: "global.connection.connect();", é uma estratégia chamada Singleton, usada pra evitar criar várias objetos apenas para fazer uma execução. Ela foi usada nessa aplicação para que sempre fique em conexão com o banco de forma simples
+Obs: A ultima condição, que retorna: "global.connection.connect();", é uma estratégia chamada Singleton, usada para evitar de criar vários objetos apenas para fazer uma execução. Ela foi utilizada nesta aplicação para que sempre estabelecessemos uma conexão de forma simplificada com o banco
  
 ### Funções CRUD
-As funções CRUD são teoricamente iguais. Tem nome, os parâmetros, uma linha para usar a função connection(), o argumento SQL, algumas tem condições para atualizar apenas que não são null e uma linha de comando que devolve a conexão ao pool para que outra parte do código possa usá-la, se não liberar pode acabar esgotando as conexões disponíveis. Vejo uma função como exemplo abaixo: 
+As funções CRUD são a base das rotas do nosso backend. Possuem nome, os parâmetros, uma linha para usar a função connection(), argumentos SQL, condições para atualizar apenas que argumentos não são nulos e uma linha de comando que devolve a conexão ao pool para que outra parte do código possa usá-la, pois, se não liberar pode acabar esgotando as conexões disponíveis. Vejo uma função como exemplo abaixo: 
  
 ```javascript
  
@@ -145,7 +145,7 @@ async function deletarUsuario(id) {
 ````
  
 ### Exportação
-Para liberar as funções, para que outros arquivos usem, foi feita a sintaxe de exportação do CommonJS — um sistema de módulos bastante usado no Node.js. Veja abaixo um exemplo do arquivo usuario.js
+Para liberar as funções, disponibilizando o uso para outros arquivos, foi realizada a sintaxe de exportação do CommonJS — um sistema de módulos muito utilizado no Node.js. Veja abaixo um exemplo do arquivo usuario.js
  
 ```javascript
 module.exports = {
