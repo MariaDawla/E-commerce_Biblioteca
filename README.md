@@ -157,3 +157,120 @@ module.exports = {
     fazerLogin
 }
 ````
+
+
+# Frontend
+
+## Como rodar?
+````bash
+cd ./Frontend
+npm i
+npm start
+````
+
+### npm i
+Usado para instalar as dependências
+
+## Dependências:
+Instaladas rodando npm i, as principais são:
+
+### "react": "^19.0.0", "react-dom": "^19.0.0", "react-scripts": "5.0.1"...
+Dependências do próprio React
+
+### "react-maskinput": "^3.2.0", "react-number-format": "^5.4.3"
+Dependências de máscaras e formatação de inputs
+
+### "react-to-pdf": "^1.0.1"
+Dependência para gerar pdfs
+
+## Rotas
+O index.js contém as rotas do Frontend: 
+````javascript
+ReactDOM.createRoot(root).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Books />} />
+      <Route path="/livros" element={<Books />} />
+      <Route path="/carrinho-de-compras" element={<ShoppingCart />} />
+      <Route path="/vendas" element={<Seller />} />
+      <Route path="/pedidos" element={<Orders />} />
+    </Routes>
+  </BrowserRouter>
+);
+````
+
+### Books
+Página principal, utilizada para visualização e filtro de livros
+
+### ShoppingCart
+Página do Carrinho de Compras, onde usuários podem visualizar os itens que adicionaram ao carrinho, selecioná-los e comprá-los.
+
+### Seller
+Página dedicada ao vendedor. Nesta página você apenas visualiza e filtra os livros que seu usuário cadastrou. Também é possível inserir mais livros ou editar os que você tem acesso.
+
+### Orders
+Página de visualização dos pedidos. Um item se torna um pedido após a confirmação da compra.
+
+## Login
+O fluxo de login permite com que usuários entrem na plataforma com contas existentes ou criem suas próprias ao preencher um formulário.
+
+## Componentes
+A pasta `Components` contém os principais componentes utilizados em diversas páginas, como:
+
+### Alert
+Mostra mensagens para o usuário
+
+### Button
+Botão genérico que pode apresentar diferentes estados com base nas props passadas;
+
+### IconButton
+Botão menor, com apenas um ícone (Material Symbols and Icons Google)
+
+### Navbar
+Navbar presente em todas as páginas. Responsável pelo carregamento e fluxo de login.
+
+## Css
+Os arquivos de css estão distribuídos pelos diretórios para estilizar todas as páginas e documentos. Eles são responsáveis pela identidade visual da plataforma, padronização entre páginas e animações e efeitos.
+
+## async functions
+Utilizadas para chamar as rotas do back
+
+Exemplo:
+````javascrip
+  async function getBooks() {
+    try {
+      const response = await fetch("http://localhost:11915/livro");
+      const json = await response.json();
+
+      setBooks(
+        json.map((book) => {
+          return {
+            id: book.id,
+            name: book.nome,
+            price: book.preco,
+            url: book.imagem,
+            amountOfPages: book.numero_paginas,
+            isbn: book.isbn,
+            author: book.autor,
+            description: book.descricao,
+            publicationDate: book.data_publicacao,
+            language: book.idioma,
+          };
+        })
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  }
+````
+
+## Hooks
+No front atualmente existe apenas um hook:
+
+### useDebounce
+Usado para controlar o volume de requisições nos filtros de texto (principal é o filtro por nome de um livro). Recebe a variável e um intervalo de tempo.
+
+Exemplo: 
+````javascript
+  const debouncedNameSearch = useDebounce(nameSearch, 1000);
+````

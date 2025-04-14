@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 
-function Order() {
+function Orders() {
   const [items, setItems] = useState([]);
   const [login, setLogin] = useState(false);
 
@@ -74,4 +74,4 @@ function Order() {
   );
 }
 
-export default Order;
+export default Orders;
