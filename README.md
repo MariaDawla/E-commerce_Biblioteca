@@ -14,15 +14,15 @@ O .env foi o primeiro arquivo criado no Backend. Esse arquivo é utilizado para 
 Veja abaixo, um exemplo do arquivo .env
 
 ```javascript
-user = avnadmin
+user = <seu user>
 
-host = pg-a7d88d0-germinare-a6c4.d.aivencloud.com
+host = <seu host>
 
-database = dbBiblioteca
+database = <seu database ExdbBiblioteca>
 
-password = AVNS_gBVTrL6D4nMLZpl7UYm
+password = <sua senha>
 
-port = 11915
+port = <sua senha Ex:11915>
  
 ````
 
