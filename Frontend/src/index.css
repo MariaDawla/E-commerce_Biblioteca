@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#loading {
+  background: color-mix(in srgb, var(--dark-blue) 40%, #00000066)
+    url(assets/loading.svg) no-repeat center center;
+  background-size: 7.5rem;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 100;
+}

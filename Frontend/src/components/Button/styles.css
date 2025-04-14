@@ -1,0 +1,23 @@
+input[type="button"] {
+  background-color: var(--dark);
+  border: none;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  color: var(--light);
+  font-size: 2rem;
+  transition: 0.25s;
+  letter-spacing: 0.2rem;
+  font-weight: 500;
+
+  &:hover {
+    letter-spacing: 0.4rem;
+    background-color: color-mix(in srgb, var(--dark) 95%, var(--light) 5%);
+  }
+
+  &:disabled {
+    background-color: color-mix(in srgb, var(--dark) 60%, var(--light) 40%);
+    &:hover {
+      letter-spacing: 0.2rem;
+    }
+  }
+}

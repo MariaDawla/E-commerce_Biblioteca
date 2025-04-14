@@ -1,0 +1,270 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway";
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6d75e8;
+  }
+}
+
+*::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--dark-blue);
+  border-radius: 0.1rem;
+}
+
+html {
+  --light: #f2f2f2;
+  --dark: #292929;
+  --bg: #eaedf2;
+  --success: #37c87b;
+  --error: #e20a3d;
+  --info: #37c87b;
+  font-size: 9px;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+h1 {
+  font-size: 2.4rem;
+}
+
+.App {
+  background-color: var(--light);
+  height: 100vh;
+  width: 100vw;
+  padding: 2.4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-cover {
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  background: url("https://i.postimg.cc/90whgcYK/Frame-9-1.png");
+  width: 14rem;
+  transition: 0.25s;
+
+  img {
+    transition: 0.25s;
+    width: 100%;
+  }
+}
+
+.content {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.books-container {
+  display: flex;
+  gap: 2.4rem;
+  flex-direction: column;
+  max-width: 125rem;
+  height: 100%;
+  margin: auto;
+  overflow: auto;
+}
+
+.books {
+  display: flex;
+  gap: 2.4rem;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.book-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.book-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  overflow: hidden;
+  max-width: min-content;
+
+  .book-cover:hover {
+    opacity: 0.8;
+
+    img {
+      rotate: 10deg;
+      scale: 0.8;
+    }
+  }
+}
+
+.circle-animation {
+  width: 0vh;
+  height: 0vh;
+  animation: 1s grow both 0.25s ease-in-out;
+  background: url("https://i.postimg.cc/90whgcYK/Frame-9-1.png");
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+@keyframes grow {
+  to {
+    width: 500vh;
+    height: 500vh;
+  }
+}
+
+.selected-book {
+  width: 100%;
+  height: 100%;
+  background: url("https://i.postimg.cc/90whgcYK/Frame-9-1.png");
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px #29292940 solid;
+  display: flex;
+}
+
+.book-images-container {
+  height: 100%;
+  width: 0;
+  animation: appearFromTheSide 1s both 0.25s;
+  background: url("https://i.postimg.cc/MG6GxWfN/Rectangle-3-1.png");
+  background-position: center center;
+  background-size: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 60%;
+    animation: appearWithRotation 1s both 0.5s;
+  }
+}
+
+@keyframes appearFromTheSide {
+  to {
+    width: min(40rem, 40vw);
+  }
+}
+
+@keyframes appearWithRotation {
+  from {
+    width: 20%;
+    rotate: -90deg;
+    opacity: 0;
+    filter: blur(2rem);
+  }
+}
+
+.modal-content {
+  animation: appearWithBlur 1s both 1.25s;
+  flex: 1;
+  box-sizing: border-box;
+  padding: 4.8rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+
+  .books {
+    width: 100%;
+
+    .book-container {
+      .book-cover {
+        background: var(--light);
+      }
+    }
+  }
+
+  p {
+    font-size: 1.8rem;
+  }
+}
+
+@keyframes appearWithBlur {
+  from {
+    filter: blur(1.2rem);
+    opacity: 0;
+    top: 2.4rem;
+    left: 2.4rem;
+  }
+}
+
+.modal-line {
+  width: 100%;
+  height: 1.2rem;
+  background-color: var(--dark);
+  border-radius: 0.2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 3.2rem;
+}
+
+.price {
+  font-family: "DM Sans";
+  margin-top: 1.6rem;
+  margin-bottom: 4.2rem;
+}
+
+.book-info {
+  padding: 2.4rem;
+  background-color: var(--light);
+  border: 2px #29292940 solid;
+  display: flex;
+  margin-bottom: 3.2rem;
+  overflow-x: auto;
+  gap: 3.2rem;
+}
+
+.header-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  align-items: center;
+  * {
+    word-wrap: break-word;
+    white-space: nowrap;
+  }
+}
+
+.align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 1.2rem;
+
+  .text-input {
+    background-color: var(--bg);
+  }
+}
+
+select {
+  flex: 1;
+  appearance: none;
+  box-sizing: border-box;
+
+  * {
+    background-color: var(--bg);
+
+    &:hover {
+      background-color: var(--light);
+    }
+  }
+}
