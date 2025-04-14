@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Books from "./pages/Books";
 import ShoppingCart from "./pages/ShoppingCart";
 import Seller from "./pages/Seller";
-import Order from "./pages/Orders";
+import Orders from "./pages/Orders";
 
 const root = document.getElementById("root");
 
@@ -15,7 +15,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/livros" element={<Books />} />
       <Route path="/carrinho-de-compras" element={<ShoppingCart />} />
       <Route path="/vendas" element={<Seller />} />
-      <Route path="/pedidos" element={<Order />} />
+      <Route path="/pedidos" element={<Orders />} />
     </Routes>
   </BrowserRouter>
 );

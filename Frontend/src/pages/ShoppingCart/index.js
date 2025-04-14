@@ -9,32 +9,7 @@ function ShoppingCart() {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [removeLoading, setRemoveLoading] = useState(false);
   const [buyLoading, setBuyLoading] = useState(false);
-  const [items, setItems] = useState([
-    // {
-    //   pk_id: 1,
-    //   title: "Der Kleine Prinz",
-    //   price: 40,
-    //   description:
-    //     "Die Geschichte vom kleinen Prinzen, der unvermittelt bei einem notgelandeten Piloten in der Wüste auftaucht, fasziniert seit Jahrzehnten Kinder wie Erwachsene. Wir hören, woher der kleine Prinz kommt, welche seltsamen Planeten er besuchte und welche Abenteuer er erlebt hat. Wenn er uns danach wieder verlässt, sehen wir die Welt mit anderen Augen. Seine sanfte Weisheit berührt und verwundert uns, wir sind traurig, aber bereichert.",
-    //   url: "https://i.postimg.cc/d1DqYBFT/Mask-group-5.png",
-    // },
-    // {
-    //   pk_id: 2,
-    //   title: "Der Kleine Prinz",
-    //   price: 40,
-    //   description:
-    //     "Die Geschichte vom kleinen Prinzen, der unvermittelt bei einem notgelandeten Piloten in der Wüste auftaucht, fasziniert seit Jahrzehnten Kinder wie Erwachsene. Wir hören, woher der kleine Prinz kommt, welche seltsamen Planeten er besuchte und welche Abenteuer er erlebt hat. Wenn er uns danach wieder verlässt, sehen wir die Welt mit anderen Augen. Seine sanfte Weisheit berührt und verwundert uns, wir sind traurig, aber bereichert.",
-    //   url: "https://i.postimg.cc/d1DqYBFT/Mask-group-5.png",
-    // },
-    // {
-    //   pk_id: 3,
-    //   title: "Der Kleine Prinz",
-    //   price: 40,
-    //   description:
-    //     "Die Geschichte vom kleinen Prinzen, der unvermittelt bei einem notgelandeten Piloten in der Wüste auftaucht, fasziniert seit Jahrzehnten Kinder wie Erwachsene. Wir hören, woher der kleine Prinz kommt, welche seltsamen Planeten er besuchte und welche Abenteuer er erlebt hat. Wenn er uns danach wieder verlässt, sehen wir die Welt mit anderen Augen. Seine sanfte Weisheit berührt und verwundert uns, wir sind traurig, aber bereichert.",
-    //   url: "https://i.postimg.cc/d1DqYBFT/Mask-group-5.png",
-    // },
-  ]);
+  const [items, setItems] = useState([]);
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -110,7 +85,9 @@ function ShoppingCart() {
           "Content-Type": "application/json",
         },
       });
+      toPDF();
     } catch (e) {
+      console.error(e);
     } finally {
       setBuyLoading(false);
     }
