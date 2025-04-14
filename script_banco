@@ -1,18 +1,3 @@
-CREATE TABLE Livro 
-( 
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255),
-    titulo_original VARCHAR(50),
-    genero VARCHAR(100),  
-    idioma VARCHAR(50),
-    autor VARCHAR(255),  
-    editora VARCHAR(255),
-    preco FLOAT,   
-    numero_paginas INT,  
-    isbn VARCHAR(20),
-    data_publicacao DATE,
-    imagem VARCHAR(255)
-);
 CREATE TABLE Usuario 
 ( 
     id SERIAL PRIMARY KEY,  
@@ -27,50 +12,130 @@ CREATE TABLE Usuario
     numero INT,  
     cep VARCHAR(20)
 );
+
+CREATE TABLE Livro 
+( 
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    titulo_original VARCHAR(50),
+    genero VARCHAR(100),  
+    idioma VARCHAR(50),
+    autor VARCHAR(255),  
+    editora VARCHAR(255),
+    preco FLOAT,   
+    numero_paginas INT,
+	quantidade INT,
+    isbn VARCHAR(20),
+    descricao VARCHAR(255),
+    data_publicacao DATE,
+    imagem VARCHAR(255),
+	id_vendedor INT,
+	FOREIGN KEY (id_vendedor) REFERENCES Usuario(id) ON DELETE CASCADE
+);
+
 CREATE TABLE Carrinho 
 ( 
     id SERIAL PRIMARY KEY,
+    id_usuario INT,
     id_livro INT,  
-    id_usuario INT,  
-    preco_total FLOAT,
-    FOREIGN KEY (id_livro) REFERENCES Livro(id),
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+    preco_unitario FLOAT,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE
 );
+
 CREATE TABLE Estoque 
 ( 
     id SERIAL PRIMARY KEY,    
     id_livro INT, 
     quantidade INT,
-    FOREIGN KEY (id_livro) REFERENCES Livro(id)
+    FOREIGN KEY (id_livro) REFERENCES Livro(id) ON DELETE CASCADE
 );
+
 CREATE TABLE Pedido 
 ( 
     id SERIAL PRIMARY KEY,
-    id_usuario INT,  
-    preco_total FLOAT,  
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+    id_usuario INT,
+    id_livro INT,
+    preco_unitario FLOAT,  
+    quantidade INT,
+	data_pedido DATE,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id) ON DELETE CASCADE
 );
 CREATE TABLE carrinho_livro 
 ( 
     id SERIAL PRIMARY KEY, 
     id_carrinho INT,  
     id_livro INT,  
-    FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id),
-    FOREIGN KEY (id_livro) REFERENCES Livro(id)
+    FOREIGN KEY (id_carrinho) REFERENCES Carrinho(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_livro) REFERENCES Livro(id) ON DELETE CASCADE
 );
+
 CREATE TABLE livro_pedido 
 ( 
     id SERIAL PRIMARY KEY,
     id_livro INT,  
     id_pedido INT,
-    FOREIGN KEY (id_livro) REFERENCES Livro(id),
-    FOREIGN KEY (id_pedido) REFERENCES Pedido(id)
+    FOREIGN KEY (id_livro) REFERENCES Livro(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id) ON DELETE CASCADE
 );
 CREATE TABLE usuario_pedido 
 ( 
     id SERIAL PRIMARY KEY, 
     id_usuario INT,  
     id_pedido INT,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
-    FOREIGN KEY (id_pedido) REFERENCES Pedido(id)
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id) ON DELETE CASCADE
 );
+
+
+INSERT INTO Usuario (nome, email, senha, cpf, telefone, cidade, rua, bairro, numero, cep) 
+VALUES 
+('João Silva', 'joao.silva@email.com', 'senha123', '123.456.789-00', '(11) 98765-4321', 
+'São Paulo', 'Rua das Flores', 'Centro', 123, '01010-000');
+
+INSERT INTO Livro (
+    nome, 
+    titulo_original, 
+    genero, 
+    idioma, 
+    autor, 
+    editora, 
+    preco, 
+    numero_paginas,
+	quantidade,
+    isbn, 
+    descricao, 
+    data_publicacao, 
+    imagem,
+	id_vendedor
+)
+VALUES
+    ('Wie ein Vogel', 'White Bird', 'Drama', 'Alemão', 'R.J. Palacio', 'Carl Hanser Verlag', 10.00, 288, 50, '978-3-446-27506-5', 'História de Sara Blum durante a ocupação nazista.', '2023-02-20', 'https://i.postimg.cc/bYF4CzHt/Mask-group-1.png', 1),
+    ('The Little Prince', 'Le Petit Prince', 'Fábula', 'Inglês', 'Antoine de Saint-Exupéry', 'Gallimard (original)', 10.00, 93, 50, 'Varia', 'Fábula sobre um príncipe viajando pelo universo.', '1943-02-20', 'https://i.postimg.cc/YCqGrKsM/Mask-group-2.png', 1),
+    ('Der Kleine Prinz', 'Le Petit Prince', 'Fábula', 'Alemão', 'Antoine de Saint-Exupéry', 'Várias editoras', 10.00, 93, 50, 'Varia', 'Mesma descrição que "The Little Prince".', '1943-02-20', 'https://i.postimg.cc/d1DqYBFT/Mask-group-5.png', 1),
+    ('White Bird', 'White Bird', 'Drama', 'Inglês', 'R.J. Palacio', 'Alfred A. Knopf', 10.00, 288, 50, 'Varia', 'História de Sara Blum durante a ocupação nazista.', '2023-02-20', 'https://i.postimg.cc/bJpT5jCN/Mask-group-6.png', 1),
+    ('Harry Potter et la Coupe de feu', 'Harry Potter and the Goblet of Fire', 'Fantasia', 'Francês', 'J.K. Rowling', 'Gallimard Jeunesse', 10.00, 636, 100, '9782070541270', 'Quarto livro da série Harry Potter.', '2000-07-08', 'https://i.postimg.cc/HkPnK06J/Mask-group-7.png', 1),
+    ('Harry Potter und der Feuerkelch', 'Harry Potter and the Goblet of Fire', 'Fantasia', 'Alemão', 'J.K. Rowling', 'Carlsen Verlag', 10.00, 636, 120, '9783551551687', 'Mesma descrição que "Harry Potter et la Coupe de feu".', '2000-07-8', 'https://i.postimg.cc/mrJwbHgk/Mask-group-8.png', 1),
+    ('O Labirinto dos Ossos', 'The Maze of Bones', 'Aventura', 'Português', 'Rick Riordan', 'Várias editoras', 10.00, 160, 100, '9780545090544', 'Primeiro livro da série The 39 Clues.', '2023-02-20', 'https://i.postimg.cc/4y9ScH52/Mask-group-11.png', 1),
+    ('Das Labyrinth der Knochen', 'The Maze of Bones', 'Aventura', 'Alemão', 'Rick Riordan', 'Loewe Verlag', 10.00, 160, 120, '9783551319416', 'Mesma descrição que "O Labirinto dos Ossos".', '2023-02-20', 'https://i.postimg.cc/fyt6vrwK/Mask-group-12.png', 1),
+    ('Fuga - Série Ilha', 'Escape (Island Trilogy, Book 3)', 'Infantojuvenil', 'Português', 'Gordon Korman', 'Arxjovem', 10.00, 147, 50, 'Não especificado', 'Terceiro livro da trilogia Island.', '2003-02-20', 'https://i.postimg.cc/ZKyW9Yh9/Mask-group-13.png', 1),
+    ('Pássaro Branco', 'White Bird', 'Drama', 'Português', 'R.J. Palacio', 'Não especificada', 10.00, 288, 20, 'Não especificado', 'Mesma descrição que "White Bird".', '2023-02-20', 'https://i.postimg.cc/MTPYGZJP/Mask-group-14.png', 1),
+    ('O Ladrão de Raios', 'Percy Jackson & The Lightning Thief', 'Fantasia', 'Português', 'Rick Riordan', 'Não especificada', 10.00, 375, 20, '9780786838653', 'Primeiro livro da série Percy Jackson.', '2023-02-20', 'https://i.postimg.cc/g2tRRSTj/Mask-group-15.png', 1),
+    ('Le Voleur de foudre', 'Percy Jackson & The Lightning Thief', 'Fantasia', 'Francês', 'Rick Riordan', 'Bayard Jeunesse', 10.00, 375, 70, '9782070613137', 'Mesma descrição que "O Ladrão de Raios".', '2023-02-20', 'https://i.postimg.cc/8CT3JCxN/Mask-group-16.png', 1),
+    ('Island - Book Three: Escape', 'Escape (Island Trilogy, Book 3)', 'Aventura', 'Inglês', 'Gordon Korman', 'Scholastic Inc.', 10.00, 144, 70, '9780545630764', 'Mesma descrição que "Fuga - Série Ilha".', '2013-06-25', 'https://i.postimg.cc/SRsmmGpM/Mask-group-4.png', 1);
+
+INSERT INTO Estoque (id_livro, quantidade) VALUES
+(1, 50),
+(2, 50),
+(3, 50),
+(4, 50),
+(5, 100),
+(6, 120),
+(7, 100),
+(8, 120),
+(9, 50),
+(10, 20),
+(11, 20),
+(12, 70),
+(13, 70);
