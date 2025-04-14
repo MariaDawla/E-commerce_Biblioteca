@@ -138,7 +138,7 @@ async function connect() {
  
 ````
  
-Obs: A ultima condição, que retorna: "global.connection.connect();", é uma estratégia chamada Singleton, usada para evitar de criar vários objetos apenas para fazer uma execução. Ela foi utilizada nesta aplicação para que sempre estabelecessemos uma conexão de forma simplificada com o banco
+Obs: A ultima condição, que retorna: "global.connection.connect();", é uma estratégia chamada Singleton, usada para evitar de criar vários objetos apenas para fazer uma execução. Ela foi utilizada nesta aplicação para que sempre estabelecemos uma conexão de forma simplificada com o banco
  
 ### Funções CRUD
 As funções CRUD são a base das rotas do nosso backend. Possuem nome, os parâmetros, uma linha para usar a função connection(), argumentos SQL, condições para atualizar apenas que argumentos não são nulos e uma linha de comando que devolve a conexão ao pool para que outra parte do código possa usá-la, pois, se não liberar pode acabar esgotando as conexões disponíveis. Vejo uma função como exemplo abaixo: 
