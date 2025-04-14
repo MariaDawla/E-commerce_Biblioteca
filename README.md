@@ -29,7 +29,7 @@ port = sua_porta
  
     
 ## .index.js
-### introdução
+### Introdução
 O index.js foi o segundo arquivo criado. Esse arquivo tem a função principal de interagir diretamente com o frontend, disponibilizando as funções dos outros arquivos.
  
 ### Primeiros códigos
