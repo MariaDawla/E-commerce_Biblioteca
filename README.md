@@ -14,15 +14,15 @@ O .env foi o primeiro arquivo criado no Backend. Esse arquivo é utilizado para 
 Veja abaixo, um exemplo do arquivo .env
 
 ```javascript
-user = <seu user>
+user = seu_user
 
-host = <seu host>
+host = seu_host
 
-database = <seu database ExdbBiblioteca>
+database = seu_database
 
-password = <sua senha>
+password = sua_senha
 
-port = <sua senha Ex:11915>
+port = sua_porta
  
 ````
 
