@@ -203,10 +203,10 @@ ReactDOM.createRoot(root).render(
 Página principal, utilizada para visualização e filtro de livros
 
 ### ShoppingCart
-Página do Carrinho de Compras, onde usuários podem visualizar os itens adicionaram ao carrinho, selecioná-los e comprá-los.
+Página do Carrinho de Compras, onde usuários podem visualizar os itens que adicionaram ao carrinho, selecioná-los e comprá-los.
 
 ### Seller
-Página dedicada ao vendedor. Nesta página você apenas visualiza e filtra os livros que o usuário cadastrou. Também é possível inserir mais livros ou editar os que você tem acesso.
+Página dedicada ao vendedor. Nesta página você apenas visualiza e filtra os livros que seu usuário cadastrou. Também é possível inserir mais livros ou editar os que você tem acesso.
 
 ### Orders
 Página de visualização dos pedidos. Um item se torna um pedido após a confirmação da compra.
